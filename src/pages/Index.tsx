@@ -218,6 +218,13 @@ const Index = () => {
                     </div>
 
                     <div className="space-y-3">
+                      <div className="flex items-center justify-center gap-2 bg-green-600/20 border border-green-600/30 rounded-lg py-2 px-4">
+                        <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-green-500 animate-pulse"></div>
+                        <span className="text-green-400 text-sm md:text-base font-semibold">
+                          Сейчас слушают: <span className="text-white">778</span>
+                        </span>
+                      </div>
+                      
                       <Button
                         size="lg"
                         onClick={togglePlay}
