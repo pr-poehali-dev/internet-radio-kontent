@@ -143,22 +143,17 @@ const Index = () => {
       <main className="pt-20">
         <section id="home" className="min-h-screen flex items-center justify-center px-4">
           <div className="container mx-auto max-w-4xl animate-fade-in">
-            <div className="text-center mb-8 md:mb-12">
-              <img
-                src="https://cdn.poehali.dev/files/6c095838-e40a-4ee2-a759-d81a449f7ae4.jpg"
-                alt="КонтентМедиаPRO"
-                className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-6 md:mb-8 object-contain"
-              />
-              <h1 className="text-3xl md:text-6xl font-bold font-heading mb-4">
-                <span className="text-white">КонтентМедиа</span><span className="text-red-600">PRO</span>
+            <div className="text-center mb-12 md:mb-16">
+              <h1 className="text-4xl md:text-7xl font-bold font-heading mb-6 md:mb-8">
+                <span className="text-white">КонтентМедиа</span><span className="text-red-600">Pro</span>
               </h1>
-              <p className="text-base md:text-xl text-muted-foreground mb-2">
+              <p className="text-lg md:text-2xl text-gray-400">
                 Твоя музыка. Твой ритм. Твоя радиостанция.
               </p>
             </div>
 
-            <Card className="bg-black/90 backdrop-blur-sm border-2 border-white/20 shadow-2xl animate-scale-in">
-              <CardContent className="p-6 md:p-12">
+            <Card className="bg-black/80 backdrop-blur-sm border-2 border-white/10 shadow-2xl animate-scale-in">
+              <CardContent className="p-8 md:p-12">
                 <div className="flex flex-col items-center gap-8">
                   <audio
                     ref={audioRef}
@@ -170,51 +165,31 @@ const Index = () => {
                     <source src="https://myradio24.org/54137" type="audio/mpeg" />
                   </audio>
 
-                  <div className="text-center space-y-6">
-                    <h2 className="text-2xl md:text-4xl font-bold text-white uppercase tracking-wider">Прямой эфир</h2>
-                    
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-red-600 rounded-full blur-2xl opacity-50 animate-pulse-slow"></div>
-                      <Button
-                        size="lg"
-                        onClick={togglePlay}
-                        className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-red-600 hover:bg-red-700 hover:scale-110 transition-all duration-300 shadow-xl"
-                      >
-                        {isPlaying ? (
-                          <Icon name="Pause" size={40} className="md:w-12 md:h-12" />
-                        ) : (
-                          <Icon name="Play" size={40} className="ml-1 md:w-12 md:h-12" />
-                        )}
-                      </Button>
+                  <div className="w-full space-y-6">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-3 h-3 rounded-full ${isPlaying ? 'bg-red-600' : 'bg-gray-500'}`}></div>
+                      <span className="text-white text-lg md:text-xl font-medium">
+                        {isPlaying ? 'В эфире' : 'Оффлайн'}
+                      </span>
                     </div>
-                  </div>
 
-                  <div className="w-full text-center space-y-4">
-                    {isPlaying && (
-                      <div className="flex items-center justify-center gap-2 text-sm md:text-base">
-                        <div className="flex gap-1">
-                          <div className="w-1 h-4 md:h-6 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
-                          <div className="w-1 h-6 md:h-8 bg-white rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
-                          <div className="w-1 h-4 md:h-6 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
-                          <div className="w-1 h-5 md:h-7 bg-white rounded-full animate-pulse" style={{ animationDelay: '450ms' }}></div>
-                        </div>
-                        <span className="text-red-600 font-semibold">В ЭФИРЕ</span>
-                        <div className="flex gap-1">
-                          <div className="w-1 h-5 md:h-7 bg-white rounded-full animate-pulse" style={{ animationDelay: '450ms' }}></div>
-                          <div className="w-1 h-4 md:h-6 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
-                          <div className="w-1 h-6 md:h-8 bg-white rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
-                          <div className="w-1 h-4 md:h-6 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
-                        </div>
-                      </div>
-                    )}
-                    
-                    <div className="space-y-3 bg-white/10 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-white/20">
-                      <p className="text-xs md:text-sm text-gray-400 uppercase tracking-wider">Сейчас играет</p>
-                      <h3 className="text-2xl md:text-3xl font-bold text-white animate-fade-in">
-                        {currentTrack.artist}
-                      </h3>
-                      <p className="text-lg md:text-xl text-gray-300 animate-fade-in">{currentTrack.title}</p>
+                    <div className="text-center space-y-4">
+                      <h2 className="text-3xl md:text-5xl font-bold text-white">
+                        {currentTrack.title || 'Non-Stop'}
+                      </h2>
+                      <p className="text-xl md:text-2xl text-gray-400">
+                        {currentTrack.artist || 'КонтентМедиаPro'}
+                      </p>
                     </div>
+
+                    <Button
+                      size="lg"
+                      onClick={togglePlay}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white text-lg md:text-xl py-6 md:py-8 rounded-xl transition-all duration-300 font-semibold"
+                    >
+                      <Icon name={isPlaying ? 'Pause' : 'Play'} size={24} className="mr-3" />
+                      {isPlaying ? 'Пауза' : 'Слушать эфир'}
+                    </Button>
                   </div>
                 </div>
               </CardContent>
