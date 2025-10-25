@@ -119,7 +119,6 @@ const Index = () => {
             <div className="hidden md:flex gap-6">
               {[
                 { id: 'home', label: 'Главная' },
-                { id: 'news', label: 'Новости' },
                 { id: 'contacts', label: 'Контакты' },
               ].map((item) => (
                 <button
@@ -141,7 +140,6 @@ const Index = () => {
             <div className="md:hidden mt-4 pb-4 flex flex-col gap-4 animate-fade-in">
               {[
                 { id: 'home', label: 'Главная' },
-                { id: 'news', label: 'Новости' },
                 { id: 'contacts', label: 'Контакты' },
               ].map((item) => (
                 <button
@@ -249,34 +247,6 @@ const Index = () => {
                 </CardContent>
               </Card>
             )}
-          </div>
-        </section>
-
-        <section id="news" className="min-h-screen flex items-center justify-center px-4 py-20">
-          <div className="container mx-auto max-w-4xl">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading mb-8 md:mb-12 text-center">
-              Последние <span className="text-primary">новости</span>
-            </h2>
-            <div className="grid gap-4 md:gap-6">
-              {news.map((item, index) => (
-                <Card
-                  key={index}
-                  className="bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CardContent className="p-4 md:p-6">
-                    <div className="flex items-start gap-3 md:gap-4">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                      <div className="flex-1">
-                        <p className="text-xs md:text-sm text-muted-foreground mb-2">{item.date}</p>
-                        <h3 className="text-lg md:text-xl font-semibold mb-2">{item.title}</h3>
-                        <p className="text-sm md:text-base text-muted-foreground">{item.text}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
           </div>
         </section>
 
