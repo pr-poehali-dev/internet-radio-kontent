@@ -83,9 +83,10 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <button
               onClick={() => scrollToSection('home')}
-              className="text-xl md:text-2xl font-bold font-heading text-white hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 text-base md:text-2xl font-bold font-heading text-white hover:opacity-80 transition-opacity"
             >
-              КонтентМедиа<span className="text-red-600">PRO</span>
+              <Icon name="Radio" size={24} className="text-red-600" />
+              <span>КонтентМедиа<span className="text-red-600">PRO</span></span>
             </button>
             
             <button
@@ -144,10 +145,10 @@ const Index = () => {
         <section id="home" className="min-h-screen flex items-center justify-center px-4">
           <div className="container mx-auto max-w-4xl animate-fade-in">
             <div className="text-center mb-12 md:mb-16">
-              <h1 className="text-4xl md:text-7xl font-bold font-heading mb-6 md:mb-8">
+              <h1 className="text-3xl md:text-7xl font-bold font-heading mb-6 md:mb-8">
                 <span className="text-white">КонтентМедиа</span><span className="text-red-600">Pro</span>
               </h1>
-              <p className="text-lg md:text-2xl text-gray-400">
+              <p className="text-base md:text-2xl text-gray-400">
                 Твоя музыка. Твой ритм. Твоя радиостанция.
               </p>
             </div>
