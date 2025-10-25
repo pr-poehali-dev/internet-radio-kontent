@@ -22,10 +22,25 @@ const Index = () => {
         if (response.ok) {
           const data = await response.json();
           if (data && data.artist && data.title) {
-            setCurrentTrack({ 
+            const newTrack = { 
               artist: data.artist, 
               title: data.title
-            });
+            };
+            
+            // Only update if track changed
+            if (currentTrack.artist !== newTrack.artist || currentTrack.title !== newTrack.title) {
+              setCurrentTrack(newTrack);
+              
+              // Save new track to database
+              try {
+                await fetch('https://functions.poehali.dev/d070fe9f-b63f-4b75-b94f-1b0c9c2ebb1e', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' }
+                });
+              } catch (e) {
+                console.error('Error saving track:', e);
+              }
+            }
           }
         }
       } catch (error) {
@@ -56,7 +71,7 @@ const Index = () => {
       clearInterval(trackInterval);
       clearInterval(historyInterval);
     };
-  }, []);
+  }, [currentTrack]);
 
   useEffect(() => {
     const updateListeners = () => {

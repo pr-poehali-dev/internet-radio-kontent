@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "Save track to history",
+      "method": "POST",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "status": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
