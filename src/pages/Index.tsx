@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -7,45 +7,6 @@ import Icon from '@/components/ui/icon';
 const Index = () => {
   const [currentSection, setCurrentSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState({ artist: 'КонтентМедиаPRO', title: 'Загрузка...' });
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.play().catch(() => {
-        setIsPlaying(false);
-      });
-    }
-
-    const updateTrack = () => {
-      const tracks = [
-        { artist: 'Дискотека Авария', title: 'Новогодняя' },
-        { artist: 'Макс Корж', title: 'Малый повзрослел' },
-        { artist: 'Звери', title: 'Районы-кварталы' },
-        { artist: 'Земфира', title: 'Искала' },
-        { artist: 'Би-2', title: 'Полковнику никто не пишет' },
-      ];
-      const randomTrack = tracks[Math.floor(Math.random() * tracks.length)];
-      setCurrentTrack(randomTrack);
-    };
-
-    updateTrack();
-    const interval = setInterval(updateTrack, 45000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        audioRef.current.play();
-        setIsPlaying(true);
-      }
-    }
-  };
 
   const schedule = [
     { time: '06:00', program: 'Утреннее шоу' },
@@ -168,40 +129,21 @@ const Index = () => {
             <Card className="bg-card/50 backdrop-blur-sm border-border animate-scale-in">
               <CardContent className="p-6 md:p-8">
                 <div className="flex flex-col items-center gap-6">
-                  <audio
-                    ref={audioRef}
-                    src="https://stream.zeno.fm/054z7dfztxhvv"
-                    preload="auto"
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                  />
-
-                  <div className="w-full text-center space-y-4">
-                    <div className="space-y-2">
-                      <p className="text-sm text-muted-foreground">Сейчас играет:</p>
-                      <h3 className="text-xl md:text-2xl font-bold text-primary">{currentTrack.artist}</h3>
-                      <p className="text-lg text-foreground">{currentTrack.title}</p>
-                    </div>
-                    
-                    <Button
-                      size="lg"
-                      onClick={togglePlay}
-                      className="w-20 h-20 rounded-full bg-primary hover:bg-primary/90 transition-all hover:scale-105"
-                    >
-                      {isPlaying ? (
-                        <Icon name="Pause" size={32} />
-                      ) : (
-                        <Icon name="Play" size={32} className="ml-1" />
-                      )}
-                    </Button>
+                  <div className="w-full" style={{ overflow: 'hidden', borderRadius: '8px' }}>
+                    <iframe
+                      src="https://myradio24.com/54137"
+                      width="100%"
+                      height="200"
+                      className="border-0"
+                      allow="autoplay"
+                      style={{ display: 'block' }}
+                    ></iframe>
                   </div>
                   
-                  {isPlaying && (
-                    <div className="flex items-center gap-2 text-sm text-primary animate-pulse-slow">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>Прямой эфир</span>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2 text-sm text-primary animate-pulse-slow">
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    <span>Прямой эфир</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
