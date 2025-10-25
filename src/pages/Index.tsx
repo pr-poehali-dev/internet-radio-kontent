@@ -67,6 +67,25 @@ const Index = () => {
     }
   };
 
+  const handleShare = async () => {
+    const shareData = {
+      title: 'КонтентМедиаPRO',
+      text: `Слушаю: ${currentTrack.artist} — ${currentTrack.title}`,
+      url: window.location.href
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Ссылка скопирована в буфер обмена!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
+
 
 
   const news = [
@@ -208,14 +227,26 @@ const Index = () => {
                       </p>
                     </div>
 
-                    <Button
-                      size="lg"
-                      onClick={togglePlay}
-                      className="w-full bg-red-600 hover:bg-red-700 text-white text-lg md:text-xl py-6 md:py-8 rounded-xl transition-all duration-300 font-semibold"
-                    >
-                      <Icon name={isPlaying ? 'Pause' : 'Play'} size={24} className="mr-3" />
-                      {isPlaying ? 'Пауза' : 'Слушать эфир'}
-                    </Button>
+                    <div className="space-y-3">
+                      <Button
+                        size="lg"
+                        onClick={togglePlay}
+                        className="w-full bg-red-600 hover:bg-red-700 text-white text-lg md:text-xl py-6 md:py-8 rounded-xl transition-all duration-300 font-semibold"
+                      >
+                        <Icon name={isPlaying ? 'Pause' : 'Play'} size={24} className="mr-3" />
+                        {isPlaying ? 'Пауза' : 'Слушать эфир'}
+                      </Button>
+                      
+                      <Button
+                        size="lg"
+                        onClick={handleShare}
+                        variant="outline"
+                        className="w-full border-2 border-white/20 hover:border-red-600 hover:bg-red-600/10 text-white text-base md:text-lg py-4 md:py-6 rounded-xl transition-all duration-300"
+                      >
+                        <Icon name="Share2" size={20} className="mr-2" />
+                        Поделиться
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>
