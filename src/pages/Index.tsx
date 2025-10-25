@@ -306,14 +306,18 @@ const Index = () => {
         </section>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-red-600 text-white py-3 overflow-hidden">
-        <div className="whitespace-nowrap animate-marquee inline-block">
-          <span className="inline-flex items-center gap-8 text-lg font-semibold">
-            <span>🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
-            <span>🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
-            <span>🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
-            <span>🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
-          </span>
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-red-600 text-white py-4 overflow-hidden shadow-2xl">
+        <div className="flex animate-marquee">
+          <div className="flex-shrink-0 flex items-center gap-12 pr-12">
+            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+          </div>
+          <div className="flex-shrink-0 flex items-center gap-12 pr-12">
+            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+          </div>
         </div>
       </div>
 
