@@ -26,19 +26,31 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     
     if method == 'GET':
         try:
-            data = urllib.parse.urlencode({'action': 'song'}).encode('utf-8')
             req = urllib.request.Request(
-                'https://myradio24.com/en/api/54137',
-                data=data,
-                headers={'Content-Type': 'application/x-www-form-urlencoded'}
+                'https://myradio24.org/54137/status-json.xsl',
+                headers={'User-Agent': 'Mozilla/5.0'}
             )
             
             with urllib.request.urlopen(req, timeout=5) as response:
                 result = json.loads(response.read().decode('utf-8'))
+                print(f"Status JSON Response: {result}")
+                
+                icestats = result.get('icestats', {})
+                source = icestats.get('source', {})
+                
+                title_full = source.get('title', 'КонтентМедиаPRO - В эфире')
+                
+                if ' - ' in title_full:
+                    parts = title_full.split(' - ', 1)
+                    artist = parts[0].strip()
+                    title = parts[1].strip()
+                else:
+                    artist = 'КонтентМедиаPRO'
+                    title = title_full
                 
                 track_data = {
-                    'artist': result.get('artist', 'КонтентМедиаPRO'),
-                    'title': result.get('title', 'В эфире')
+                    'artist': artist,
+                    'title': title
                 }
                 
                 return {
@@ -51,6 +63,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'body': json.dumps(track_data)
                 }
         except Exception as e:
+            print(f"Error: {e}")
             return {
                 'statusCode': 200,
                 'headers': {
