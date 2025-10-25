@@ -8,40 +8,35 @@ const Index = () => {
   const [currentSection, setCurrentSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState({ artist: '', title: '' });
+  const [currentTrack, setCurrentTrack] = useState({ artist: 'Загрузка...', title: '' });
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    const updateMetadata = () => {
-      if (audioRef.current) {
-        const audio = audioRef.current;
+    const updateTrack = async () => {
+      try {
+        const response = await fetch('https://functions.poehali.dev/a74bc916-c4b8-4156-8eaa-650265cf0145');
         
-        if ('mediaSession' in navigator && navigator.mediaSession.metadata) {
-          const metadata = navigator.mediaSession.metadata;
-          if (metadata.title || metadata.artist) {
-            setCurrentTrack({
-              title: metadata.title || '',
-              artist: metadata.artist || ''
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.artist && data.title) {
+            setCurrentTrack({ 
+              artist: data.artist, 
+              title: data.title
             });
           }
         }
+      } catch (error) {
+        console.error('Error fetching track info:', error);
       }
     };
 
-    const audio = audioRef.current;
-    if (audio) {
-      audio.addEventListener('loadedmetadata', updateMetadata);
-      audio.addEventListener('play', updateMetadata);
-      
-      const metadataInterval = setInterval(updateMetadata, 5000);
-      
-      return () => {
-        audio.removeEventListener('loadedmetadata', updateMetadata);
-        audio.removeEventListener('play', updateMetadata);
-        clearInterval(metadataInterval);
-      };
-    }
+    updateTrack();
+    const trackInterval = setInterval(updateTrack, 10000);
+    
+    return () => {
+      clearInterval(trackInterval);
+    };
   }, []);
 
   const togglePlay = () => {
