@@ -145,11 +145,18 @@ const Index = () => {
         <section id="home" className="min-h-screen flex items-center justify-center px-4">
           <div className="container mx-auto max-w-4xl animate-fade-in">
             <div className="text-center mb-12 md:mb-16">
+              <div className="mb-8 md:mb-12 flex justify-center">
+                <img 
+                  src="https://cdn.poehali.dev/files/0b6cba82-83b0-43c5-8a66-cd437a298dc4.jpg" 
+                  alt="КонтентМедиа PRO" 
+                  className="w-64 md:w-96 h-auto"
+                />
+              </div>
               <h1 className="text-3xl md:text-7xl font-bold font-heading mb-6 md:mb-8">
                 <span className="text-white">КонтентМедиа</span><span className="text-red-600">Pro</span>
               </h1>
               <p className="text-base md:text-2xl text-gray-400">
-                Твоя музыка. Твой ритм. Твоя радиостанция.
+                Твоя музыка. Твой ритм.<br className="md:hidden" /> Твоя радиостанция.
               </p>
             </div>
 
