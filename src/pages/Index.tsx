@@ -218,13 +218,19 @@ const Index = () => {
                       </span>
                     </div>
 
-                    <div className="text-center space-y-4">
-                      <h2 className="text-3xl md:text-5xl font-bold text-white">
-                        {currentTrack.title || 'Non-Stop'}
-                      </h2>
-                      <p className="text-xl md:text-2xl text-gray-400">
-                        {currentTrack.artist || 'КонтентМедиаPro'}
-                      </p>
+                    <div className="text-center space-y-2">
+                      <div className="bg-black/40 rounded-lg p-4 backdrop-blur-sm border border-white/10">
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                          <Icon name="Music" size={20} className="text-red-600" />
+                          <span className="text-sm text-gray-400 uppercase tracking-wider">Сейчас играет</span>
+                        </div>
+                        <h2 className="text-2xl md:text-4xl font-bold text-white mb-1">
+                          {currentTrack.title || 'Non-Stop'}
+                        </h2>
+                        <p className="text-lg md:text-xl text-gray-300">
+                          {currentTrack.artist || 'КонтентМедиаPRO'}
+                        </p>
+                      </div>
                     </div>
 
                     <div className="space-y-3">
@@ -237,15 +243,29 @@ const Index = () => {
                         {isPlaying ? 'Пауза' : 'Слушать эфир'}
                       </Button>
                       
-                      <Button
-                        size="lg"
-                        onClick={handleShare}
-                        variant="outline"
-                        className="w-full border-2 border-white/20 hover:border-red-600 hover:bg-red-600/10 text-white text-base md:text-lg py-4 md:py-6 rounded-xl transition-all duration-300"
-                      >
-                        <Icon name="Share2" size={20} className="mr-2" />
-                        Поделиться
-                      </Button>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Button
+                          size="lg"
+                          onClick={handleShare}
+                          variant="outline"
+                          className="border-2 border-white/20 hover:border-red-600 hover:bg-red-600/10 text-white text-sm md:text-base py-4 md:py-6 rounded-xl transition-all duration-300"
+                        >
+                          <Icon name="Share2" size={18} className="mr-2" />
+                          Поделиться
+                        </Button>
+                        
+                        <Button
+                          size="lg"
+                          variant="outline"
+                          asChild
+                          className="border-2 border-white/20 hover:border-red-600 hover:bg-red-600/10 text-white text-sm md:text-base py-4 md:py-6 rounded-xl transition-all duration-300"
+                        >
+                          <a href="https://myradio24.org/54137.m3u" download="КонтентМедиаPRO.m3u">
+                            <Icon name="Download" size={18} className="mr-2" />
+                            Прямой эфир
+                          </a>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
