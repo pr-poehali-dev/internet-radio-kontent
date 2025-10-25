@@ -280,57 +280,6 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="about" className="min-h-screen flex items-center justify-center px-4 py-20">
-          <div className="container mx-auto max-w-4xl">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading mb-8 md:mb-12 text-center">
-              Почему <span className="text-red-600">мы?</span>
-            </h2>
-            <div className="grid gap-6 md:gap-8">
-              <Card className="bg-black/60 backdrop-blur-sm border-2 border-white/20 hover:border-red-600/50 transition-all">
-                <CardContent className="p-6 md:p-8">
-                  <div className="flex items-start gap-4 md:gap-6">
-                    <div className="text-red-600 flex-shrink-0">
-                      <Icon name="Radio" size={48} className="md:w-16 md:h-16" />
-                    </div>
-                    <div className="text-left">
-                      <h3 className="text-xl md:text-2xl font-bold text-white mb-3">24/7 Эфир</h3>
-                      <p className="text-gray-300 text-sm md:text-base">Круглосуточное вещание лучшей музыки и программ</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-black/60 backdrop-blur-sm border-2 border-red-600 hover:border-red-600/70 transition-all">
-                <CardContent className="p-6 md:p-8">
-                  <div className="flex items-start gap-4 md:gap-6">
-                    <div className="text-red-600 flex-shrink-0">
-                      <Icon name="Music2" size={48} className="md:w-16 md:h-16" />
-                    </div>
-                    <div className="text-left">
-                      <h3 className="text-xl md:text-2xl font-bold text-white mb-3">Разнообразие жанров</h3>
-                      <p className="text-gray-300 text-sm md:text-base">От рока до попа — музыка на любой вкус</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-black/60 backdrop-blur-sm border-2 border-white/20 hover:border-red-600/50 transition-all">
-                <CardContent className="p-6 md:p-8">
-                  <div className="flex items-start gap-4 md:gap-6">
-                    <div className="text-red-600 flex-shrink-0">
-                      <Icon name="Headphones" size={48} className="md:w-16 md:h-16" />
-                    </div>
-                    <div className="text-left">
-                      <h3 className="text-xl md:text-2xl font-bold text-white mb-3">Качественный звук</h3>
-                      <p className="text-gray-300 text-sm md:text-base">Кристально чистое звучание в HD качестве</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         <section id="contacts" className="min-h-screen flex items-center justify-center px-4 py-20">
           <div className="container mx-auto max-w-4xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold font-heading mb-8 md:mb-12">
