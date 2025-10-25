@@ -9,6 +9,7 @@ const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState({ artist: 'Загрузка...', title: '' });
+  const [listeners, setListeners] = useState(778);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -36,6 +37,20 @@ const Index = () => {
     
     return () => {
       clearInterval(trackInterval);
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateListeners = () => {
+      const baseCount = 778;
+      const variation = Math.floor(Math.random() * 21) - 10;
+      setListeners(baseCount + variation);
+    };
+
+    const listenersInterval = setInterval(updateListeners, 15000);
+    
+    return () => {
+      clearInterval(listenersInterval);
     };
   }, []);
 
@@ -221,7 +236,7 @@ const Index = () => {
                       <div className="flex items-center justify-center gap-2 bg-green-600/20 border border-green-600/30 rounded-lg py-2 px-4">
                         <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-green-500 animate-pulse"></div>
                         <span className="text-green-400 text-sm md:text-base font-semibold">
-                          Сейчас слушают: <span className="text-white">778</span>
+                          Сейчас слушают: <span className="text-white">{listeners}</span>
                         </span>
                       </div>
                       
