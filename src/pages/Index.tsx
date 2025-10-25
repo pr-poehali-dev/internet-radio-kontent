@@ -10,6 +10,7 @@ const Index = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState({ artist: 'Загрузка...', title: '' });
   const [listeners, setListeners] = useState(778);
+  const [trackHistory, setTrackHistory] = useState<Array<{artist: string, title: string}>>([]);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -32,11 +33,28 @@ const Index = () => {
       }
     };
 
+    const updateHistory = async () => {
+      try {
+        const response = await fetch('https://functions.poehali.dev/df037205-f54b-48b7-8a61-648b24abdfd5');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.tracks) {
+            setTrackHistory(data.tracks);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching track history:', error);
+      }
+    };
+
     updateTrack();
+    updateHistory();
     const trackInterval = setInterval(updateTrack, 10000);
+    const historyInterval = setInterval(updateHistory, 30000);
     
     return () => {
       clearInterval(trackInterval);
+      clearInterval(historyInterval);
     };
   }, []);
 
@@ -264,6 +282,32 @@ const Index = () => {
               </CardContent>
             </Card>
 
+            {trackHistory.length > 0 && (
+              <Card className="mt-6 md:mt-8 bg-black/60 backdrop-blur-sm border-2 border-white/10">
+                <CardContent className="p-4 md:p-8">
+                  <h3 className="text-lg md:text-2xl font-bold text-white mb-4 md:mb-6 flex items-center gap-2 md:gap-3">
+                    <Icon name="ListMusic" size={20} className="text-red-600 md:w-6 md:h-6" />
+                    Недавно играло
+                  </h3>
+                  <div className="space-y-2 md:space-y-3">
+                    {trackHistory.slice(0, 5).map((track, index) => (
+                      <div 
+                        key={index}
+                        className="flex items-start gap-2 md:gap-3 p-2 md:p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                      >
+                        <div className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-red-600/20 flex items-center justify-center">
+                          <span className="text-red-600 font-semibold text-xs md:text-sm">{index + 1}</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white font-medium truncate text-sm md:text-base">{track.title}</p>
+                          <p className="text-gray-400 text-xs md:text-sm truncate">{track.artist}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
           </div>
         </section>
