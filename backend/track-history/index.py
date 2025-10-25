@@ -1,5 +1,6 @@
 import json
 import urllib.request
+import re
 from typing import Dict, Any, List
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
@@ -24,8 +25,61 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         }
     
     if method == 'GET':
+        # Try multiple endpoints to get track history
+        endpoints = [
+            'https://myradio24.org/api/radio/54137/history',
+            'https://myradio24.org/54137/currentsong?sid=1',
+            'https://myradio24.org/54137/stats?json=1'
+        ]
+        
+        for endpoint in endpoints:
+            try:
+                req = urllib.request.Request(
+                    endpoint,
+                    headers={'User-Agent': 'Mozilla/5.0'}
+                )
+                
+                with urllib.request.urlopen(req, timeout=3) as response:
+                    content = response.read().decode('utf-8', errors='ignore')
+                    print(f"Trying {endpoint}: {content[:200]}")
+                    
+                    # Try JSON parsing
+                    try:
+                        data = json.loads(content)
+                        print(f"JSON data: {data}")
+                        
+                        # Extract tracks from different possible formats
+                        tracks_data = data.get('history') or data.get('tracks') or data.get('data')
+                        if tracks_data and isinstance(tracks_data, list):
+                            tracks = []
+                            for item in tracks_data[:10]:
+                                title = item.get('title') or item.get('song')
+                                artist = item.get('artist')
+                                if title and ' - ' in str(title):
+                                    parts = str(title).split(' - ', 1)
+                                    tracks.append({'artist': parts[0].strip(), 'title': parts[1].strip()})
+                                elif artist and title:
+                                    tracks.append({'artist': str(artist), 'title': str(title)})
+                            
+                            if tracks:
+                                print(f"Found {len(tracks)} tracks")
+                                return {
+                                    'statusCode': 200,
+                                    'headers': {
+                                        'Content-Type': 'application/json',
+                                        'Access-Control-Allow-Origin': '*'
+                                    },
+                                    'isBase64Encoded': False,
+                                    'body': json.dumps({'tracks': tracks})
+                                }
+                    except json.JSONDecodeError:
+                        pass
+            except Exception as e:
+                print(f"Error with {endpoint}: {e}")
+                continue
+        
+        # If all endpoints failed, try HTML parsing as last resort
         try:
-            # Try to get history from played.html endpoint
             req = urllib.request.Request(
                 'https://myradio24.org/54137/played.html',
                 headers={'User-Agent': 'Mozilla/5.0'}
@@ -33,37 +87,39 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             
             with urllib.request.urlopen(req, timeout=5) as response:
                 content = response.read().decode('utf-8', errors='ignore')
+                print(f"HTML played.html content: {content[:300]}")
                 
                 # Parse HTML content to extract track info
                 tracks: List[Dict[str, str]] = []
                 
-                # Simple parsing - looking for pattern in HTML
-                lines = content.split('\n')
-                for line in lines:
-                    if ' - ' in line:
-                        # Clean HTML tags
-                        clean_line = line.strip()
-                        for tag in ['<tr><td>', '</td></tr>', '<td>', '</td>', '<br>', '<br/>']:
-                            clean_line = clean_line.replace(tag, '')
-                        
-                        if ' - ' in clean_line and len(clean_line) < 200:
-                            parts = clean_line.split(' - ', 1)
-                            if len(parts) == 2:
-                                artist = parts[0].strip()
-                                title = parts[1].strip()
-                                
-                                # Filter out time stamps, metadata, and HTML tags
-                                if (artist and title and 
-                                    not artist.isdigit() and 
-                                    ':' not in artist[:5] and
-                                    '<' not in artist and 
-                                    '<' not in title and
-                                    len(artist) > 2 and 
-                                    len(title) > 2):
-                                    tracks.append({
-                                        'artist': artist,
-                                        'title': title
-                                    })
+                # Remove all HTML tags using simple regex-like approach
+                # Find all text between <td> tags
+                td_pattern = r'<td[^>]*>(.*?)</td>'
+                matches = re.findall(td_pattern, content, re.DOTALL)
+                
+                for match in matches:
+                    # Clean HTML entities and tags
+                    clean_text = re.sub(r'<[^>]+>', '', match).strip()
+                    
+                    if ' - ' in clean_text and len(clean_text) < 200:
+                        parts = clean_text.split(' - ', 1)
+                        if len(parts) == 2:
+                            artist = parts[0].strip()
+                            title = parts[1].strip()
+                            
+                            # Filter out time stamps, metadata, and invalid entries
+                            if (artist and title and 
+                                len(artist) > 2 and 
+                                len(title) > 2 and
+                                not artist.isdigit() and 
+                                ':' not in artist[:5] and
+                                'http' not in artist.lower() and
+                                'http' not in title.lower()):
+                                tracks.append({
+                                    'artist': artist,
+                                    'title': title
+                                })
+                                print(f"Found track: {artist} - {title}")
                 
                 # Return last 10 unique tracks
                 unique_tracks = []
