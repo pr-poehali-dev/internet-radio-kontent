@@ -9,50 +9,39 @@ const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState({ artist: 'КонтентМедиаPRO', title: 'Загрузка...' });
-  const [trackHistory, setTrackHistory] = useState<Array<{artist: string, title: string}>>([]);
+
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    const updateTrack = async () => {
-      try {
-        const response = await fetch('https://functions.poehali.dev/a74bc916-c4b8-4156-8eaa-650265cf0145');
+    const updateMetadata = () => {
+      if (audioRef.current) {
+        const audio = audioRef.current;
         
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.artist && data.title) {
-            setCurrentTrack({ 
-              artist: data.artist, 
-              title: data.title
+        if ('mediaSession' in navigator && navigator.mediaSession.metadata) {
+          const metadata = navigator.mediaSession.metadata;
+          if (metadata.title || metadata.artist) {
+            setCurrentTrack({
+              title: metadata.title || 'Non-Stop',
+              artist: metadata.artist || 'КонтентМедиаPRO'
             });
           }
         }
-      } catch (error) {
-        console.error('Error fetching track info:', error);
       }
     };
 
-    const updateHistory = async () => {
-      try {
-        const response = await fetch('https://functions.poehali.dev/df037205-f54b-48b7-8a61-648b24abdfd5');
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.tracks) {
-            setTrackHistory(data.tracks);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching track history:', error);
-      }
-    };
-
-    updateTrack();
-    updateHistory();
-    const trackInterval = setInterval(updateTrack, 10000);
-    const historyInterval = setInterval(updateHistory, 30000);
-    return () => {
-      clearInterval(trackInterval);
-      clearInterval(historyInterval);
-    };
+    const audio = audioRef.current;
+    if (audio) {
+      audio.addEventListener('loadedmetadata', updateMetadata);
+      audio.addEventListener('play', updateMetadata);
+      
+      const metadataInterval = setInterval(updateMetadata, 5000);
+      
+      return () => {
+        audio.removeEventListener('loadedmetadata', updateMetadata);
+        audio.removeEventListener('play', updateMetadata);
+        clearInterval(metadataInterval);
+      };
+    }
   }, []);
 
   const togglePlay = () => {
@@ -243,29 +232,15 @@ const Index = () => {
                         {isPlaying ? 'Пауза' : 'Слушать эфир'}
                       </Button>
                       
-                      <div className="grid grid-cols-2 gap-3">
-                        <Button
-                          size="lg"
-                          onClick={handleShare}
-                          variant="outline"
-                          className="border-2 border-white/20 hover:border-red-600 hover:bg-red-600/10 text-white text-sm md:text-base py-4 md:py-6 rounded-xl transition-all duration-300"
-                        >
-                          <Icon name="Share2" size={18} className="mr-2" />
-                          Поделиться
-                        </Button>
-                        
-                        <Button
-                          size="lg"
-                          variant="outline"
-                          asChild
-                          className="border-2 border-white/20 hover:border-red-600 hover:bg-red-600/10 text-white text-sm md:text-base py-4 md:py-6 rounded-xl transition-all duration-300"
-                        >
-                          <a href="https://myradio24.org/54137.m3u" download="КонтентМедиаPRO.m3u">
-                            <Icon name="Download" size={18} className="mr-2" />
-                            Прямой эфир
-                          </a>
-                        </Button>
-                      </div>
+                      <Button
+                        size="lg"
+                        onClick={handleShare}
+                        variant="outline"
+                        className="w-full border-2 border-white/20 hover:border-red-600 hover:bg-red-600/10 text-white text-base md:text-lg py-4 md:py-6 rounded-xl transition-all duration-300"
+                      >
+                        <Icon name="Share2" size={20} className="mr-2" />
+                        Поделиться
+                      </Button>
                     </div>
                   </div>
                 </div>
