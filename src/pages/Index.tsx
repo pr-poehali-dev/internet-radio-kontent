@@ -44,13 +44,7 @@ const Index = () => {
     }
   };
 
-  const schedule = [
-    { time: '06:00', program: 'Утреннее шоу' },
-    { time: '10:00', program: 'Музыкальный драйв' },
-    { time: '14:00', program: 'Дневной эфир' },
-    { time: '18:00', program: 'Вечерний час' },
-    { time: '22:00', program: 'Ночная волна' },
-  ];
+
 
   const news = [
     {
@@ -101,7 +95,6 @@ const Index = () => {
             <div className="hidden md:flex gap-6">
               {[
                 { id: 'home', label: 'Главная' },
-                { id: 'schedule', label: 'Эфир' },
                 { id: 'news', label: 'Новости' },
                 { id: 'contacts', label: 'Контакты' },
               ].map((item) => (
@@ -124,7 +117,6 @@ const Index = () => {
             <div className="md:hidden mt-4 pb-4 flex flex-col gap-4 animate-fade-in">
               {[
                 { id: 'home', label: 'Главная' },
-                { id: 'schedule', label: 'Эфир' },
                 { id: 'news', label: 'Новости' },
                 { id: 'contacts', label: 'Контакты' },
               ].map((item) => (
@@ -162,9 +154,9 @@ const Index = () => {
               </p>
             </div>
 
-            <Card className="bg-card/50 backdrop-blur-sm border-border animate-scale-in">
-              <CardContent className="p-6 md:p-8">
-                <div className="flex flex-col items-center gap-6">
+            <Card className="bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20 backdrop-blur-sm border-2 border-primary/30 shadow-2xl animate-scale-in">
+              <CardContent className="p-6 md:p-12">
+                <div className="flex flex-col items-center gap-8">
                   <audio
                     ref={audioRef}
                     src="https://stream.zeno.fm/054z7dfztxhvv"
@@ -174,64 +166,51 @@ const Index = () => {
                     onPause={() => setIsPlaying(false)}
                   />
 
-                  <div className="w-full text-center space-y-4">
-                    <div className="space-y-2">
-                      <p className="text-sm text-muted-foreground">Сейчас играет:</p>
-                      <h3 className="text-xl md:text-2xl font-bold text-primary animate-fade-in">{currentTrack.artist}</h3>
-                      <p className="text-lg text-foreground animate-fade-in">{currentTrack.title}</p>
-                    </div>
-                    
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 rounded-full blur-2xl opacity-50 animate-pulse-slow"></div>
                     <Button
                       size="lg"
                       onClick={togglePlay}
-                      className="w-20 h-20 rounded-full bg-primary hover:bg-primary/90 transition-all hover:scale-105"
+                      className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-primary via-purple-500 to-pink-500 hover:scale-110 transition-all duration-300 shadow-xl"
                     >
                       {isPlaying ? (
-                        <Icon name="Pause" size={32} />
+                        <Icon name="Pause" size={40} className="md:w-12 md:h-12" />
                       ) : (
-                        <Icon name="Play" size={32} className="ml-1" />
+                        <Icon name="Play" size={40} className="ml-1 md:w-12 md:h-12" />
                       )}
                     </Button>
                   </div>
-                  
-                  {isPlaying && (
-                    <div className="flex items-center gap-2 text-sm text-primary animate-pulse-slow">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>Прямой эфир</span>
+
+                  <div className="w-full text-center space-y-4">
+                    {isPlaying && (
+                      <div className="flex items-center justify-center gap-2 text-sm md:text-base">
+                        <div className="flex gap-1">
+                          <div className="w-1 h-4 md:h-6 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                          <div className="w-1 h-6 md:h-8 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                          <div className="w-1 h-4 md:h-6 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                          <div className="w-1 h-5 md:h-7 bg-primary rounded-full animate-pulse" style={{ animationDelay: '450ms' }}></div>
+                        </div>
+                        <span className="text-primary font-semibold">В ЭФИРЕ</span>
+                        <div className="flex gap-1">
+                          <div className="w-1 h-5 md:h-7 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '450ms' }}></div>
+                          <div className="w-1 h-4 md:h-6 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                          <div className="w-1 h-6 md:h-8 bg-primary rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                          <div className="w-1 h-4 md:h-6 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="space-y-3 bg-background/40 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-primary/20">
+                      <p className="text-xs md:text-sm text-muted-foreground uppercase tracking-wider">Сейчас играет</p>
+                      <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-fade-in">
+                        {currentTrack.artist}
+                      </h3>
+                      <p className="text-lg md:text-xl text-foreground/90 animate-fade-in">{currentTrack.title}</p>
                     </div>
-                  )}
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </section>
-
-        <section id="schedule" className="min-h-screen flex items-center justify-center px-4 py-20">
-          <div className="container mx-auto max-w-4xl">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading mb-8 md:mb-12 text-center">
-              Расписание <span className="text-primary">эфиров</span>
-            </h2>
-            <div className="grid gap-4">
-              {schedule.map((item, index) => (
-                <Card
-                  key={index}
-                  className="bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CardContent className="p-4 md:p-6">
-                    <div className="flex items-center gap-4 md:gap-6">
-                      <div className="text-2xl md:text-3xl font-bold font-heading text-primary min-w-[60px] md:min-w-[80px]">
-                        {item.time}
-                      </div>
-                      <Separator orientation="vertical" className="h-10 md:h-12" />
-                      <div className="flex-1">
-                        <h3 className="text-lg md:text-xl font-semibold">{item.program}</h3>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
           </div>
         </section>
 
