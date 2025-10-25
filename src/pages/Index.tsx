@@ -8,7 +8,7 @@ const Index = () => {
   const [currentSection, setCurrentSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState({ artist: 'КонтентМедиаPRO', title: 'Загрузка...' });
+  const [currentTrack, setCurrentTrack] = useState({ artist: '', title: '' });
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -21,8 +21,8 @@ const Index = () => {
           const metadata = navigator.mediaSession.metadata;
           if (metadata.title || metadata.artist) {
             setCurrentTrack({
-              title: metadata.title || 'Non-Stop',
-              artist: metadata.artist || 'КонтентМедиаPRO'
+              title: metadata.title || '',
+              artist: metadata.artist || ''
             });
           }
         }
