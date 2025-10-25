@@ -154,11 +154,11 @@ const Index = () => {
                 alt="КонтентМедиаPRO"
                 className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-6 md:mb-8 object-contain"
               />
-              <h1 className="text-4xl md:text-6xl font-bold font-heading mb-4">
+              <h1 className="text-3xl md:text-6xl font-bold font-heading mb-4">
                 Контент<span className="text-primary">Медиа</span>PRO
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8">
-                Ваше любимое интернет-радио 24/7
+              <p className="text-base md:text-xl text-muted-foreground mb-2">
+                Твоя музыка. Твой ритм. Твоя радиостанция.
               </p>
             </div>
 
