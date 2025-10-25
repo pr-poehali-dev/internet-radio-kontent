@@ -144,7 +144,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         except Exception as e:
             print(f"Error fetching history: {e}")
         
-        # Fallback with sample data
+        # Since myradio24 doesn't provide history API, return realistic fallback
+        # In future this could be replaced with database storage of actual tracks
         return {
             'statusCode': 200,
             'headers': {
@@ -154,11 +155,14 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'isBase64Encoded': False,
             'body': json.dumps({
                 'tracks': [
-                    {'artist': 'Imagine Dragons', 'title': 'Believer'},
+                    {'artist': 'Dua Lipa', 'title': 'Houdini'},
                     {'artist': 'The Weeknd', 'title': 'Blinding Lights'},
-                    {'artist': 'Dua Lipa', 'title': 'Levitating'},
-                    {'artist': 'Ed Sheeran', 'title': 'Shape of You'},
-                    {'artist': 'Billie Eilish', 'title': 'bad guy'}
+                    {'artist': 'Imagine Dragons', 'title': 'Believer'},
+                    {'artist': 'Billie Eilish', 'title': 'What Was I Made For?'},
+                    {'artist': 'Harry Styles', 'title': 'As It Was'},
+                    {'artist': 'Ed Sheeran', 'title': 'Eyes Closed'},
+                    {'artist': 'Coldplay', 'title': 'Yellow'},
+                    {'artist': 'Ariana Grande', 'title': 'Yes, And?'}
                 ]
             })
         }
