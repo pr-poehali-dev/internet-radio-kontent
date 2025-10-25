@@ -12,23 +12,33 @@ const Index = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    const updateTrack = () => {
-      const tracks = [
-        { artist: 'Дискотека Авария', title: 'Новогодняя' },
-        { artist: 'Макс Корж', title: 'Малый повзрослел' },
-        { artist: 'Звери', title: 'Районы-кварталы' },
-        { artist: 'Земфира', title: 'Искала' },
-        { artist: 'Би-2', title: 'Полковнику никто не пишет' },
-        { artist: 'Сплин', title: 'Выхода нет' },
-        { artist: 'Мумий Тролль', title: 'Владивосток 2000' },
-        { artist: 'Ленинград', title: 'Экспонат' },
-      ];
-      const randomTrack = tracks[Math.floor(Math.random() * tracks.length)];
-      setCurrentTrack(randomTrack);
+    const updateTrack = async () => {
+      try {
+        const response = await fetch('https://myradio24.com/en/api/54137', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'action=song'
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.artist && data.title) {
+            setCurrentTrack({ 
+              artist: data.artist || 'КонтентМедиаPRO', 
+              title: data.title || 'Загрузка...' 
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching track info:', error);
+        setCurrentTrack({ artist: 'КонтентМедиаPRO', title: 'В эфире' });
+      }
     };
 
     updateTrack();
-    const interval = setInterval(updateTrack, 180000);
+    const interval = setInterval(updateTrack, 10000);
     return () => clearInterval(interval);
   }, []);
 
