@@ -14,26 +14,19 @@ const Index = () => {
   useEffect(() => {
     const updateTrack = async () => {
       try {
-        const response = await fetch('https://myradio24.com/en/api/54137', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: 'action=song'
-        });
+        const response = await fetch('https://functions.poehali.dev/a74bc916-c4b8-4156-8eaa-650265cf0145');
         
         if (response.ok) {
           const data = await response.json();
           if (data && data.artist && data.title) {
             setCurrentTrack({ 
-              artist: data.artist || 'КонтентМедиаPRO', 
-              title: data.title || 'Загрузка...' 
+              artist: data.artist, 
+              title: data.title
             });
           }
         }
       } catch (error) {
         console.error('Error fetching track info:', error);
-        setCurrentTrack({ artist: 'КонтентМедиаPRO', title: 'В эфире' });
       }
     };
 
