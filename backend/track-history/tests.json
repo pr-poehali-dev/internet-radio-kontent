@@ -1,0 +1,10 @@
+{
+  "tests": [
+    {
+      "name": "Get track history",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}
