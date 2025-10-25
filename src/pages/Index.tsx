@@ -327,22 +327,22 @@ const Index = () => {
         </section>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-red-600 text-white py-4 overflow-hidden shadow-2xl">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-red-600 text-white py-2 md:py-4 overflow-hidden shadow-2xl mb-0 md:mb-0">
         <div className="flex animate-marquee">
-          <div className="flex-shrink-0 flex items-center gap-12 pr-12">
-            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
-            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
-            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+          <div className="flex-shrink-0 flex items-center gap-8 md:gap-12 pr-8 md:pr-12">
+            <span className="text-sm md:text-xl font-bold whitespace-nowrap">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+            <span className="text-sm md:text-xl font-bold whitespace-nowrap">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+            <span className="text-sm md:text-xl font-bold whitespace-nowrap">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
           </div>
-          <div className="flex-shrink-0 flex items-center gap-12 pr-12">
-            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
-            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
-            <span className="text-lg md:text-xl font-bold">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+          <div className="flex-shrink-0 flex items-center gap-8 md:gap-12 pr-8 md:pr-12">
+            <span className="text-sm md:text-xl font-bold whitespace-nowrap">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+            <span className="text-sm md:text-xl font-bold whitespace-nowrap">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
+            <span className="text-sm md:text-xl font-bold whitespace-nowrap">🎵 Сейчас играет: {currentTrack.artist} — {currentTrack.title}</span>
           </div>
         </div>
       </div>
 
-      <footer className="border-t border-border py-6 md:py-8 px-4 pb-20">
+      <footer className="border-t border-border py-6 md:py-8 px-4 pb-12 md:pb-20">
         <div className="container mx-auto text-center text-sm md:text-base text-muted-foreground">
           <p>© 2025 КонтентМедиаPRO. Все права защищены.</p>
         </div>
