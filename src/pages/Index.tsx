@@ -164,8 +164,7 @@ const Index = () => {
                     onPause={() => setIsPlaying(false)}
                     onError={(e) => console.error('Audio error:', e)}
                   >
-                    <source src="https://stream.zeno.fm/054z7dfztxhvv" type="audio/mpeg" />
-                    <source src="https://myradio24.org/54137/radio.mp3" type="audio/mpeg" />
+                    <source src="https://myradio24.org/54137" type="audio/mpeg" />
                   </audio>
 
                   <div className="text-center space-y-6">
