@@ -159,12 +159,14 @@ const Index = () => {
                 <div className="flex flex-col items-center gap-8">
                   <audio
                     ref={audioRef}
-                    src="https://stream.zeno.fm/054z7dfztxhvv"
-                    preload="auto"
-                    autoPlay
+                    preload="none"
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
-                  />
+                    onError={(e) => console.error('Audio error:', e)}
+                  >
+                    <source src="https://stream.zeno.fm/054z7dfztxhvv" type="audio/mpeg" />
+                    <source src="https://myradio24.org/54137/radio.mp3" type="audio/mpeg" />
+                  </audio>
 
                   <div className="text-center space-y-6">
                     <h2 className="text-2xl md:text-4xl font-bold text-white uppercase tracking-wider">Прямой эфир</h2>
