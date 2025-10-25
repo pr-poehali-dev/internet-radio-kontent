@@ -80,9 +80,9 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <button
               onClick={() => scrollToSection('home')}
-              className="text-xl md:text-2xl font-bold font-heading text-primary hover:text-primary/80 transition-colors"
+              className="text-xl md:text-2xl font-bold font-heading text-white hover:opacity-80 transition-opacity"
             >
-              КонтентМедиа<span className="text-foreground">PRO</span>
+              КонтентМедиа<span className="text-red-600">PRO</span>
             </button>
             
             <button
@@ -147,14 +147,14 @@ const Index = () => {
                 className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-6 md:mb-8 object-contain"
               />
               <h1 className="text-3xl md:text-6xl font-bold font-heading mb-4">
-                Контент<span className="text-primary">Медиа</span>PRO
+                <span className="text-white">КонтентМедиа</span><span className="text-red-600">PRO</span>
               </h1>
               <p className="text-base md:text-xl text-muted-foreground mb-2">
                 Твоя музыка. Твой ритм. Твоя радиостанция.
               </p>
             </div>
 
-            <Card className="bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20 backdrop-blur-sm border-2 border-primary/30 shadow-2xl animate-scale-in">
+            <Card className="bg-black/90 backdrop-blur-sm border-2 border-white/20 shadow-2xl animate-scale-in">
               <CardContent className="p-6 md:p-12">
                 <div className="flex flex-col items-center gap-8">
                   <audio
@@ -166,46 +166,50 @@ const Index = () => {
                     onPause={() => setIsPlaying(false)}
                   />
 
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-pink-500 rounded-full blur-2xl opacity-50 animate-pulse-slow"></div>
-                    <Button
-                      size="lg"
-                      onClick={togglePlay}
-                      className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-primary via-purple-500 to-pink-500 hover:scale-110 transition-all duration-300 shadow-xl"
-                    >
-                      {isPlaying ? (
-                        <Icon name="Pause" size={40} className="md:w-12 md:h-12" />
-                      ) : (
-                        <Icon name="Play" size={40} className="ml-1 md:w-12 md:h-12" />
-                      )}
-                    </Button>
+                  <div className="text-center space-y-6">
+                    <h2 className="text-2xl md:text-4xl font-bold text-white uppercase tracking-wider">Прямой эфир</h2>
+                    
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-red-600 rounded-full blur-2xl opacity-50 animate-pulse-slow"></div>
+                      <Button
+                        size="lg"
+                        onClick={togglePlay}
+                        className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-red-600 hover:bg-red-700 hover:scale-110 transition-all duration-300 shadow-xl"
+                      >
+                        {isPlaying ? (
+                          <Icon name="Pause" size={40} className="md:w-12 md:h-12" />
+                        ) : (
+                          <Icon name="Play" size={40} className="ml-1 md:w-12 md:h-12" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
 
                   <div className="w-full text-center space-y-4">
                     {isPlaying && (
                       <div className="flex items-center justify-center gap-2 text-sm md:text-base">
                         <div className="flex gap-1">
-                          <div className="w-1 h-4 md:h-6 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
-                          <div className="w-1 h-6 md:h-8 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
-                          <div className="w-1 h-4 md:h-6 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
-                          <div className="w-1 h-5 md:h-7 bg-primary rounded-full animate-pulse" style={{ animationDelay: '450ms' }}></div>
+                          <div className="w-1 h-4 md:h-6 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                          <div className="w-1 h-6 md:h-8 bg-white rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                          <div className="w-1 h-4 md:h-6 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                          <div className="w-1 h-5 md:h-7 bg-white rounded-full animate-pulse" style={{ animationDelay: '450ms' }}></div>
                         </div>
-                        <span className="text-primary font-semibold">В ЭФИРЕ</span>
+                        <span className="text-red-600 font-semibold">В ЭФИРЕ</span>
                         <div className="flex gap-1">
-                          <div className="w-1 h-5 md:h-7 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '450ms' }}></div>
-                          <div className="w-1 h-4 md:h-6 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
-                          <div className="w-1 h-6 md:h-8 bg-primary rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
-                          <div className="w-1 h-4 md:h-6 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                          <div className="w-1 h-5 md:h-7 bg-white rounded-full animate-pulse" style={{ animationDelay: '450ms' }}></div>
+                          <div className="w-1 h-4 md:h-6 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                          <div className="w-1 h-6 md:h-8 bg-white rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                          <div className="w-1 h-4 md:h-6 bg-red-600 rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
                         </div>
                       </div>
                     )}
                     
-                    <div className="space-y-3 bg-background/40 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-primary/20">
-                      <p className="text-xs md:text-sm text-muted-foreground uppercase tracking-wider">Сейчас играет</p>
-                      <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-fade-in">
+                    <div className="space-y-3 bg-white/10 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-white/20">
+                      <p className="text-xs md:text-sm text-gray-400 uppercase tracking-wider">Сейчас играет</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-white animate-fade-in">
                         {currentTrack.artist}
                       </h3>
-                      <p className="text-lg md:text-xl text-foreground/90 animate-fade-in">{currentTrack.title}</p>
+                      <p className="text-lg md:text-xl text-gray-300 animate-fade-in">{currentTrack.title}</p>
                     </div>
                   </div>
                 </div>
