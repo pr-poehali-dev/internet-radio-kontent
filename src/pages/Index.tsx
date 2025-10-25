@@ -280,7 +280,7 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="min-h-screen flex items-center justify-center px-4 py-20">
+        <section id="about" className="min-h-screen flex items-center justify-center px-4 py-20">
           <div className="container mx-auto max-w-4xl">
             <h2 className="text-3xl md:text-4xl font-bold font-heading mb-8 md:mb-12 text-center">
               Почему <span className="text-red-600">мы?</span>
