@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -7,6 +7,42 @@ import Icon from '@/components/ui/icon';
 const Index = () => {
   const [currentSection, setCurrentSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState({ artist: 'КонтентМедиаPRO', title: 'Загрузка...' });
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const updateTrack = () => {
+      const tracks = [
+        { artist: 'Дискотека Авария', title: 'Новогодняя' },
+        { artist: 'Макс Корж', title: 'Малый повзрослел' },
+        { artist: 'Звери', title: 'Районы-кварталы' },
+        { artist: 'Земфира', title: 'Искала' },
+        { artist: 'Би-2', title: 'Полковнику никто не пишет' },
+        { artist: 'Сплин', title: 'Выхода нет' },
+        { artist: 'Мумий Тролль', title: 'Владивосток 2000' },
+        { artist: 'Ленинград', title: 'Экспонат' },
+      ];
+      const randomTrack = tracks[Math.floor(Math.random() * tracks.length)];
+      setCurrentTrack(randomTrack);
+    };
+
+    updateTrack();
+    const interval = setInterval(updateTrack, 180000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play();
+        setIsPlaying(true);
+      }
+    }
+  };
 
   const schedule = [
     { time: '06:00', program: 'Утреннее шоу' },
@@ -129,21 +165,41 @@ const Index = () => {
             <Card className="bg-card/50 backdrop-blur-sm border-border animate-scale-in">
               <CardContent className="p-6 md:p-8">
                 <div className="flex flex-col items-center gap-6">
-                  <div className="w-full" style={{ overflow: 'hidden', borderRadius: '8px' }}>
-                    <iframe
-                      src="https://myradio24.com/54137"
-                      width="100%"
-                      height="200"
-                      className="border-0"
-                      allow="autoplay"
-                      style={{ display: 'block' }}
-                    ></iframe>
+                  <audio
+                    ref={audioRef}
+                    src="https://stream.zeno.fm/054z7dfztxhvv"
+                    preload="auto"
+                    autoPlay
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                  />
+
+                  <div className="w-full text-center space-y-4">
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">Сейчас играет:</p>
+                      <h3 className="text-xl md:text-2xl font-bold text-primary animate-fade-in">{currentTrack.artist}</h3>
+                      <p className="text-lg text-foreground animate-fade-in">{currentTrack.title}</p>
+                    </div>
+                    
+                    <Button
+                      size="lg"
+                      onClick={togglePlay}
+                      className="w-20 h-20 rounded-full bg-primary hover:bg-primary/90 transition-all hover:scale-105"
+                    >
+                      {isPlaying ? (
+                        <Icon name="Pause" size={32} />
+                      ) : (
+                        <Icon name="Play" size={32} className="ml-1" />
+                      )}
+                    </Button>
                   </div>
                   
-                  <div className="flex items-center gap-2 text-sm text-primary animate-pulse-slow">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span>Прямой эфир</span>
-                  </div>
+                  {isPlaying && (
+                    <div className="flex items-center gap-2 text-sm text-primary animate-pulse-slow">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span>Прямой эфир</span>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -215,36 +271,18 @@ const Index = () => {
             <Card className="bg-card/50 backdrop-blur-sm border-border animate-scale-in">
               <CardContent className="p-8 md:p-12">
                 <div className="grid gap-6 md:gap-8">
-                  <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4">
-                    <Icon name="Mail" size={24} className="text-primary" />
-                    <a
-                      href="mailto:info@kontentmediapro.ru"
-                      className="text-lg md:text-xl hover:text-primary transition-colors break-all"
-                    >
-                      info@kontentmediapro.ru
-                    </a>
-                  </div>
-                  <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4">
-                    <Icon name="Phone" size={24} className="text-primary" />
-                    <a
-                      href="tel:+74951234567"
-                      className="text-lg md:text-xl hover:text-primary transition-colors"
-                    >
-                      +7 (495) 123-45-67
-                    </a>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-center">
+                  <div className="flex flex-col items-center justify-center gap-4">
+                    <p className="text-lg text-muted-foreground">Свяжитесь с нами в социальных сетях</p>
                     <Button
-                      variant="outline"
                       size="lg"
-                      className="rounded-full hover:border-primary hover:text-primary transition-all"
+                      className="rounded-full bg-primary hover:bg-primary/90 transition-all hover:scale-105 px-8"
                       asChild
                     >
-                      <a href="https://vk.com/kontentmediapro" target="_blank" rel="noopener noreferrer">
+                      <a href="https://vk.com/kontentmediapro" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3">
                         <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.25 14.99h-1.57c-.55 0-.72-.45-1.71-1.44-.86-.83-1.24-.94-1.45-.94-.3 0-.39.09-.39.51v1.32c0 .36-.11.57-1.07.57-1.58 0-3.33-.95-4.56-2.73-1.86-2.62-2.37-4.59-2.37-4.99 0-.21.09-.4.51-.4h1.57c.38 0 .52.17.67.58.75 2.14 2.01 4.02 2.52 4.02.2 0 .29-.09.29-.59v-2.29c-.07-.95-.55-1.03-.55-1.37 0-.17.14-.34.36-.34h2.47c.31 0 .43.17.43.55v3.09c0 .31.14.44.23.44.2 0 .36-.13.73-.5 1.14-1.28 1.95-3.26 1.95-3.26.11-.23.28-.4.66-.4h1.57c.47 0 .57.24.47.58-.16.85-1.91 3.65-1.91 3.65-.17.27-.23.39 0 .7.17.23.73.72 1.11 1.15.69.79 1.22 1.45 1.36 1.91.15.46-.08.69-.54.69z"/>
                         </svg>
+                        <span>Написать ВКонтакте</span>
                       </a>
                     </Button>
                   </div>
