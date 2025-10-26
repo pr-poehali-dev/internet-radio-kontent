@@ -33,12 +33,18 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             conn = psycopg2.connect(database_url)
             cur = conn.cursor()
             
-            # Get last 10 unique tracks
+            # Get last 5 unique tracks by most recent play time
             cur.execute('''
-                SELECT DISTINCT ON (artist, title) artist, title, played_at
-                FROM track_history
-                ORDER BY artist, title, played_at DESC
-                LIMIT 10
+                WITH ranked_tracks AS (
+                    SELECT artist, title, played_at,
+                           ROW_NUMBER() OVER (PARTITION BY artist, title ORDER BY played_at DESC) as rn
+                    FROM track_history
+                )
+                SELECT artist, title
+                FROM ranked_tracks
+                WHERE rn = 1
+                ORDER BY played_at DESC
+                LIMIT 5
             ''')
             
             rows = cur.fetchall()
@@ -46,6 +52,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             conn.close()
             
             tracks = [{'artist': row[0], 'title': row[1]} for row in rows]
+            print(f"DEBUG: Fetched {len(tracks)} tracks from DB")
+            if tracks:
+                print(f"DEBUG: First track: {tracks[0]}")
             
             # If no tracks in DB yet, return fallback
             if not tracks:
