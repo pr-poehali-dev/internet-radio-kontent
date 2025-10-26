@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "Get current track",
+      "method": "GET",
+      "path": "/?endpoint=current",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "artist": "string",
+        "title": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get track history",
+      "method": "GET",
+      "path": "/?endpoint=history",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

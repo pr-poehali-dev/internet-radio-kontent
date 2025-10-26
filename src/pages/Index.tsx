@@ -17,9 +17,9 @@ const Index = () => {
   const lastTrackRef = useRef({ artist: '', title: '' });
 
   useEffect(() => {
-    const updateTrack = async () => {
+    const updateData = async () => {
       try {
-        const response = await fetch('https://functions.poehali.dev/a74bc916-c4b8-4156-8eaa-650265cf0145', {
+        const response = await fetch('https://functions.poehali.dev/a938e42e-a2e7-4012-90df-34904647f611', {
           method: 'GET',
           mode: 'cors',
           cache: 'no-cache'
@@ -27,63 +27,28 @@ const Index = () => {
         
         if (response.ok) {
           const data = await response.json();
-          console.log('Track data received:', data);
-          if (data && data.artist && data.title) {
-            if (lastTrackRef.current.artist !== data.artist || lastTrackRef.current.title !== data.title) {
-              lastTrackRef.current = { artist: data.artist, title: data.title };
-              
-              try {
-                await fetch('https://functions.poehali.dev/d070fe9f-b63f-4b75-b94f-1b0c9c2ebb1e', {
-                  method: 'POST',
-                  mode: 'cors',
-                  headers: { 'Content-Type': 'application/json' }
-                });
-              } catch (e) {
-                console.error('Error saving track:', e);
-              }
-            }
-            setCurrentTrack({ artist: data.artist, title: data.title });
+          console.log('Radio data received:', data);
+          
+          if (data && data.current) {
+            setCurrentTrack({ 
+              artist: data.current.artist || 'Неизвестно', 
+              title: data.current.title || '' 
+            });
           }
-        } else {
-          console.error('Track API returned:', response.status);
+          
+          if (data && data.history && Array.isArray(data.history)) {
+            setTrackHistory(data.history);
+          }
         }
       } catch (error) {
-        console.error('Error fetching track info:', error);
+        console.error('Error fetching radio data:', error);
       }
     };
 
-    const updateHistory = async () => {
-      try {
-        const response = await fetch('https://functions.poehali.dev/df037205-f54b-48b7-8a61-648b24abdfd5', {
-          method: 'GET',
-          mode: 'cors',
-          cache: 'no-cache'
-        });
-        if (response.ok) {
-          const data = await response.json();
-          console.log('History data received:', data);
-          if (data && data.tracks && Array.isArray(data.tracks) && data.tracks.length > 0) {
-            console.log('Setting track history, count:', data.tracks.length);
-            setTrackHistory(data.tracks);
-            setCurrentTrack({ artist: data.tracks[0].artist, title: data.tracks[0].title });
-          }
-        } else {
-          console.error('History API returned:', response.status);
-        }
-      } catch (error) {
-        console.error('Error fetching track history:', error);
-      }
-    };
-
-    updateTrack();
-    updateHistory();
-    const trackInterval = setInterval(updateTrack, 10000);
-    const historyInterval = setInterval(updateHistory, 30000);
+    updateData();
+    const interval = setInterval(updateData, 15000);
     
-    return () => {
-      clearInterval(trackInterval);
-      clearInterval(historyInterval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
