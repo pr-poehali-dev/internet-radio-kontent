@@ -76,15 +76,14 @@ const Index = () => {
 
   useEffect(() => {
     const updateListeners = () => {
-      const min = 778;
-      const max = 2000;
-      const randomCount = Math.floor(Math.random() * (max - min + 1)) + min;
-      setListeners(randomCount);
+      setListeners(prev => {
+        const change = Math.floor(Math.random() * 21) - 10;
+        const newValue = prev + change;
+        return Math.max(778, Math.min(2000, newValue));
+      });
     };
 
-    updateListeners();
-    
-    const getRandomInterval = () => Math.floor(Math.random() * 10000) + 10000;
+    const getRandomInterval = () => Math.floor(Math.random() * 3000) + 5000;
     
     const scheduleNext = () => {
       const delay = getRandomInterval();
