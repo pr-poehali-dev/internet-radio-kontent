@@ -75,14 +75,27 @@
   }
 }
 
-#pp-badge {
-  transform: scale(0.4) !important;
-  bottom: 80px !important;
-  right: 10px !important;
-  opacity: 0.6 !important;
+a[href*="poehali.dev"],
+div[class*="poehali"],
+img[src*="poehali"],
+#pp-badge,
+.pp-badge,
+[data-pp-badge] {
+  transform: scale(0.35) !important;
+  transform-origin: bottom right !important;
+  bottom: 75px !important;
+  right: 5px !important;
+  opacity: 0.5 !important;
   transition: opacity 0.3s !important;
+  position: fixed !important;
+  z-index: 40 !important;
 }
 
-#pp-badge:hover {
-  opacity: 1 !important;
+a[href*="poehali.dev"]:hover,
+div[class*="poehali"]:hover,
+img[src*="poehali"]:hover,
+#pp-badge:hover,
+.pp-badge:hover,
+[data-pp-badge]:hover {
+  opacity: 0.9 !important;
 }
