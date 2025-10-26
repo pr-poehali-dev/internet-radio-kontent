@@ -6,7 +6,7 @@ Returns: JSON с artist и title
 import json
 import urllib.request
 import struct
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     method: str = event.get('httpMethod', 'GET')

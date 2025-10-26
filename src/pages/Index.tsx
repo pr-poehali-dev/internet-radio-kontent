@@ -18,9 +18,14 @@ const Index = () => {
   useEffect(() => {
     const updateTrack = async () => {
       try {
+        console.log('Fetching track info...');
         const response = await fetch('https://functions.poehali.dev/a14b9d39-d9b7-4c20-8ba3-a0ca8d113122');
+        console.log('Response status:', response.status);
+        
         if (response.ok) {
           const data = await response.json();
+          console.log('Track data:', data);
+          
           if (data && data.artist && data.title) {
             const newTrack = { artist: data.artist, title: data.title };
             
@@ -33,6 +38,8 @@ const Index = () => {
               return prev;
             });
           }
+        } else {
+          console.error('Response not OK:', response.status, response.statusText);
         }
       } catch (error) {
         console.error('Error fetching track:', error);
