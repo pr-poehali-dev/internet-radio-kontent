@@ -399,7 +399,7 @@ const Index = () => {
 
       <audio
         ref={audioRef}
-        src="https://myradio24.org/54137.m3u"
+        src="https://myradio24.org/kontentmediapro"
         preload="none"
         className="hidden"
       />
