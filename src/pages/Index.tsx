@@ -19,29 +19,33 @@ const Index = () => {
   useEffect(() => {
     const updateTrack = async () => {
       try {
-        const response = await fetch('https://functions.poehali.dev/a74bc916-c4b8-4156-8eaa-650265cf0145');
+        const response = await fetch('https://functions.poehali.dev/a74bc916-c4b8-4156-8eaa-650265cf0145', {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-cache'
+        });
         
         if (response.ok) {
           const data = await response.json();
+          console.log('Track data received:', data);
           if (data && data.artist && data.title) {
-            // Only update if track changed
             if (lastTrackRef.current.artist !== data.artist || lastTrackRef.current.title !== data.title) {
               lastTrackRef.current = { artist: data.artist, title: data.title };
-              setCurrentTrack({ artist: data.artist, title: data.title });
               
-              // Save new track to database
               try {
                 await fetch('https://functions.poehali.dev/d070fe9f-b63f-4b75-b94f-1b0c9c2ebb1e', {
                   method: 'POST',
+                  mode: 'cors',
                   headers: { 'Content-Type': 'application/json' }
                 });
               } catch (e) {
                 console.error('Error saving track:', e);
               }
-            } else {
-              setCurrentTrack({ artist: data.artist, title: data.title });
             }
+            setCurrentTrack({ artist: data.artist, title: data.title });
           }
+        } else {
+          console.error('Track API returned:', response.status);
         }
       } catch (error) {
         console.error('Error fetching track info:', error);
@@ -50,12 +54,20 @@ const Index = () => {
 
     const updateHistory = async () => {
       try {
-        const response = await fetch('https://functions.poehali.dev/df037205-f54b-48b7-8a61-648b24abdfd5');
+        const response = await fetch('https://functions.poehali.dev/df037205-f54b-48b7-8a61-648b24abdfd5', {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-cache'
+        });
         if (response.ok) {
           const data = await response.json();
-          if (data && data.tracks) {
+          console.log('History data received:', data);
+          if (data && data.tracks && Array.isArray(data.tracks)) {
+            console.log('Setting track history, count:', data.tracks.length);
             setTrackHistory(data.tracks);
           }
+        } else {
+          console.error('History API returned:', response.status);
         }
       } catch (error) {
         console.error('Error fetching track history:', error);
