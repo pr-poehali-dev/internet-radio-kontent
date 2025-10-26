@@ -99,3 +99,28 @@ img[src*="poehali"]:hover,
 [data-pp-badge]:hover {
   opacity: 0.9 !important;
 }
+
+button[class*="search"],
+button[aria-label*="search"],
+button[aria-label*="Search"],
+button[aria-label*="поиск"],
+[data-search-trigger],
+.search-trigger {
+  transform: scale(0.5) !important;
+  transform-origin: bottom left !important;
+  bottom: 75px !important;
+  left: 5px !important;
+  opacity: 0.5 !important;
+  transition: opacity 0.3s !important;
+  position: fixed !important;
+  z-index: 40 !important;
+}
+
+button[class*="search"]:hover,
+button[aria-label*="search"]:hover,
+button[aria-label*="Search"]:hover,
+button[aria-label*="поиск"]:hover,
+[data-search-trigger]:hover,
+.search-trigger:hover {
+  opacity: 0.9 !important;
+}
