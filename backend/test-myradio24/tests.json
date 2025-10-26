@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Test myradio24 station 54137",
+    "request": {
+      "method": "GET",
+      "path": "/?station=54137"
+    },
+    "response": {
+      "statusCode": 200
+    }
+  }
+]
