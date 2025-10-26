@@ -8,16 +8,10 @@ const Index = () => {
   const [currentSection, setCurrentSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState({ artist: 'TIMOFEEW', title: 'Тополя' });
+  const [currentTrack, setCurrentTrack] = useState({ artist: 'Загрузка...', title: '' });
   const [listeners, setListeners] = useState(778);
   const [displayedListeners, setDisplayedListeners] = useState(778);
-  const [trackHistory, setTrackHistory] = useState<Array<{artist: string, title: string}>>([
-    { artist: 'Настасья Самбурская, VESNA305', title: 'Глупые люди' },
-    { artist: 'Катя Денисова', title: 'Твоя девочка скучает' },
-    { artist: 'Многоточие', title: 'В жизни так бывает' },
-    { artist: 'FISHER, Aatig', title: 'Take It Off' },
-    { artist: 'Мари Краймбрери', title: 'Случилась осень' }
-  ]);
+  const [trackHistory, setTrackHistory] = useState<Array<{artist: string, title: string}>>([]);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const lastTrackRef = useRef({ artist: '', title: '' });
@@ -68,9 +62,10 @@ const Index = () => {
         if (response.ok) {
           const data = await response.json();
           console.log('History data received:', data);
-          if (data && data.tracks && Array.isArray(data.tracks)) {
+          if (data && data.tracks && Array.isArray(data.tracks) && data.tracks.length > 0) {
             console.log('Setting track history, count:', data.tracks.length);
             setTrackHistory(data.tracks);
+            setCurrentTrack({ artist: data.tracks[0].artist, title: data.tracks[0].title });
           }
         } else {
           console.error('History API returned:', response.status);
