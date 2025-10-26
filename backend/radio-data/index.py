@@ -1,5 +1,5 @@
 """
-Business: API для получения всех данных радио из БД
+Business: API для получения данных радио из БД
 Args: event с httpMethod
 Returns: JSON с текущим треком и историей
 """
