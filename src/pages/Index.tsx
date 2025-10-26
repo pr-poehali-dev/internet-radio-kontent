@@ -126,24 +126,6 @@ const Index = () => {
     }
   };
 
-  const news = [
-    {
-      date: '25 октября 2025',
-      title: 'Запуск нового утреннего шоу',
-      text: 'С понедельника стартует обновленное утреннее шоу с Анной Смирновой',
-    },
-    {
-      date: '23 октября 2025',
-      title: 'Интервью со звездой',
-      text: 'В эфире состоялось эксклюзивное интервью с популярным артистом',
-    },
-    {
-      date: '20 октября 2025',
-      title: 'Конкурс для слушателей',
-      text: 'Объявляем старт нового конкурса с ценными призами для наших слушателей',
-    },
-  ];
-
   const scrollToSection = (section: string) => {
     setCurrentSection(section);
     setIsMobileMenuOpen(false);
@@ -162,8 +144,8 @@ const Index = () => {
               onClick={() => scrollToSection('home')}
               className="flex items-center gap-2 text-base md:text-2xl font-bold font-heading text-white hover:opacity-80 transition-opacity"
             >
-              <Icon name="Radio" size={24} className="text-red-600" />
-              <span>КонтентМедиа<span className="text-red-600">PRO</span></span>
+              <Icon name="Radio" size={24} className="text-primary" />
+              <span>КонтентМедиа<span className="text-primary">PRO</span></span>
             </button>
             
             <button
@@ -228,7 +210,7 @@ const Index = () => {
                 />
               </div>
               <h1 className="text-3xl md:text-7xl font-bold font-heading mb-6 md:mb-8">
-                <span className="text-white">КонтентМедиа</span><span className="text-red-600">PRO</span>
+                <span className="text-white">КонтентМедиа</span><span className="text-primary">PRO</span>
               </h1>
               <p className="text-base md:text-2xl text-gray-400">
                 Твоя музыка. Твой ритм.<br className="md:hidden" /> Твоя радиостанция.
@@ -239,7 +221,7 @@ const Index = () => {
               <CardContent className="p-8 md:p-12">
                 <div className="flex flex-col items-center gap-6 md:gap-8 mb-8 md:mb-12">
                   <div className="relative">
-                    <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center shadow-2xl animate-pulse-slow">
+                    <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-primary to-orange-700 rounded-full flex items-center justify-center shadow-2xl animate-pulse-slow">
                       <Icon name="Radio" size={48} className="text-white md:w-16 md:h-16" />
                     </div>
                     <div className="absolute -bottom-2 -right-2 bg-green-500 w-6 h-6 md:w-8 md:h-8 rounded-full border-4 border-black animate-pulse"></div>
@@ -258,7 +240,7 @@ const Index = () => {
                   <Button
                     onClick={togglePlay}
                     size="lg"
-                    className="w-full md:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 md:py-6 px-8 md:px-12 text-base md:text-lg rounded-full shadow-lg hover:shadow-red-600/50 transition-all duration-300 hover:scale-105"
+                    className="w-full md:w-auto bg-gradient-to-r from-primary to-orange-600 hover:from-orange-600 hover:to-primary text-white font-bold py-4 md:py-6 px-8 md:px-12 text-base md:text-lg rounded-full shadow-lg hover:shadow-primary/50 transition-all duration-300 hover:scale-105"
                   >
                     <Icon name={isPlaying ? 'Pause' : 'Play'} size={24} className="mr-2 md:mr-3" />
                     {isPlaying ? 'Пауза' : 'Слушать'}
@@ -269,15 +251,18 @@ const Index = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
                   <div className="flex items-center gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg">
-                    <Icon name="Users" size={24} className="text-red-600 flex-shrink-0" />
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                      <Icon name="Users" size={24} className="text-primary flex-shrink-0" />
+                    </div>
                     <div>
-                      <div className="text-xs md:text-sm text-gray-500">Слушателей онлайн</div>
+                      <div className="text-xs md:text-sm text-gray-500">Сейчас слушают</div>
                       <div className="text-lg md:text-2xl font-bold text-white">{displayedListeners}</div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg">
-                    <Icon name="Clock" size={24} className="text-red-600 flex-shrink-0" />
+                    <Icon name="Clock" size={24} className="text-primary flex-shrink-0" />
                     <div>
                       <div className="text-xs md:text-sm text-gray-500">В эфире</div>
                       <div className="text-lg md:text-2xl font-bold text-white">24/7</div>
@@ -298,15 +283,15 @@ const Index = () => {
 
             <div className="mt-8 md:mt-12 animate-fade-in">
               <h2 className="text-xl md:text-3xl font-bold font-heading text-white mb-4 md:mb-6 flex items-center gap-2 md:gap-3">
-                <Icon name="Clock" size={24} className="text-red-600" />
+                <Icon name="Clock" size={24} className="text-primary" />
                 История треков
               </h2>
               <div className="space-y-2 md:space-y-3">
                 {trackHistory.map((track, index) => (
-                  <Card key={index} className="bg-black/60 backdrop-blur-sm border border-white/10 hover:border-red-600/50 transition-all duration-300">
+                  <Card key={index} className="bg-black/60 backdrop-blur-sm border border-white/10 hover:border-primary/50 transition-all duration-300">
                     <CardContent className="p-3 md:p-4">
                       <div className="flex items-center gap-3 md:gap-4">
-                        <div className="w-8 h-8 md:w-10 md:h-10 bg-red-600/20 rounded-full flex items-center justify-center text-red-600 font-bold text-sm md:text-base flex-shrink-0">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold text-sm md:text-base flex-shrink-0">
                           {index + 1}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -314,24 +299,6 @@ const Index = () => {
                           <div className="text-xs md:text-sm text-gray-400 truncate">{track.title}</div>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-8 md:mt-12 animate-fade-in">
-              <h2 className="text-xl md:text-3xl font-bold font-heading text-white mb-4 md:mb-6 flex items-center gap-2 md:gap-3">
-                <Icon name="Newspaper" size={24} className="text-red-600" />
-                Новости
-              </h2>
-              <div className="space-y-3 md:space-y-4">
-                {news.map((item, index) => (
-                  <Card key={index} className="bg-black/60 backdrop-blur-sm border border-white/10 hover:border-red-600/50 transition-all duration-300">
-                    <CardContent className="p-4 md:p-6">
-                      <div className="text-xs md:text-sm text-gray-500 mb-2">{item.date}</div>
-                      <h3 className="text-base md:text-xl font-bold text-white mb-2">{item.title}</h3>
-                      <p className="text-sm md:text-base text-gray-400">{item.text}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -347,36 +314,21 @@ const Index = () => {
             </h2>
             
             <Card className="bg-black/80 backdrop-blur-sm border-2 border-white/10 shadow-2xl">
-              <CardContent className="p-6 md:p-12">
-                <div className="space-y-4 md:space-y-6">
-                  <div className="flex items-start gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
-                    <Icon name="Mail" size={24} className="text-red-600 mt-1 flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs md:text-sm text-gray-500 mb-1">Email</div>
-                      <a href="mailto:info@kontentmediapro.ru" className="text-base md:text-xl text-white hover:text-red-600 transition-colors break-all">
-                        info@kontentmediapro.ru
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
-                    <Icon name="Phone" size={24} className="text-red-600 mt-1 flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs md:text-sm text-gray-500 mb-1">Телефон</div>
-                      <a href="tel:+79999999999" className="text-base md:text-xl text-white hover:text-red-600 transition-colors">
-                        +7 (999) 999-99-99
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
-                    <Icon name="MapPin" size={24} className="text-red-600 mt-1 flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs md:text-sm text-gray-500 mb-1">Адрес</div>
-                      <p className="text-base md:text-xl text-white">Москва, Россия</p>
-                    </div>
-                  </div>
-                </div>
+              <CardContent className="p-6 md:p-12 text-center">
+                <p className="text-sm md:text-lg text-gray-300 mb-6 md:mb-8">
+                  По всем вопросам и предложениям пишите нам в лс сообщества
+                </p>
+                <a
+                  href="https://vk.com/kontentmediapro"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-base md:text-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                >
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.39 14.74c-.29.37-.85.64-1.38.64-.03 0-.05 0-.08-.01-.7-.07-1.35-.53-2.17-1.13-.69-.51-1.47-1.08-2.37-1.08-.03 0-.06 0-.09.01-.95.07-1.65.7-2.31 1.29-.47.43-.95.86-1.51 1.09-.21.09-.43.13-.65.13-.49 0-.96-.19-1.31-.54-.69-.69-.88-1.82-.5-2.88.36-1 1.22-1.94 2.36-2.58.88-.49 1.88-.74 2.89-.74.39 0 .78.04 1.16.11 1.5.28 2.7 1.2 3.32 2.54.55 1.19.59 2.57.09 3.79-.11.27-.27.4-.45.4z"/>
+                  </svg>
+                  Написать ВКонтакте
+                </a>
               </CardContent>
             </Card>
           </div>
