@@ -74,3 +74,15 @@
     width: max-content;
   }
 }
+
+#pp-badge {
+  transform: scale(0.4) !important;
+  bottom: 80px !important;
+  right: 10px !important;
+  opacity: 0.6 !important;
+  transition: opacity 0.3s !important;
+}
+
+#pp-badge:hover {
+  opacity: 1 !important;
+}
