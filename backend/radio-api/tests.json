@@ -1,21 +1,14 @@
 {
   "tests": [
     {
-      "name": "Get current track",
+      "name": "Get radio data",
       "method": "GET",
-      "path": "/?endpoint=current",
+      "path": "/",
       "expectedStatus": 200,
       "expectedBody": {
-        "artist": "string",
-        "title": "string"
+        "current": "object",
+        "history": "array"
       },
-      "bodyMatcher": "partial"
-    },
-    {
-      "name": "Get track history",
-      "method": "GET",
-      "path": "/?endpoint=history",
-      "expectedStatus": 200,
       "bodyMatcher": "partial"
     }
   ]

@@ -1,10 +1,11 @@
 """
-Business: Proxy API для получения данных радио без CORS проблем
-Args: event с httpMethod и queryStringParameters
-Returns: JSON с данными треков или истории
+Business: API для получения данных радио из БД
+Args: event с httpMethod
+Returns: JSON с текущим треком и историей
 """
 import json
-import urllib.request
+import os
+import psycopg2
 from typing import Dict, Any
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
@@ -19,59 +20,49 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Max-Age': '86400'
             },
+            'isBase64Encoded': False,
             'body': ''
         }
     
     if method != 'GET':
         return {
             'statusCode': 405,
-            'headers': {'Access-Control-Allow-Origin': '*'},
+            'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+            'isBase64Encoded': False,
             'body': json.dumps({'error': 'Method not allowed'})
         }
     
-    params = event.get('queryStringParameters', {})
-    endpoint = params.get('endpoint', 'current')
-    
-    try:
-        if endpoint == 'current':
-            req = urllib.request.Request('https://public.radio-t.com/api/v1/info')
-            with urllib.request.urlopen(req, timeout=5) as response:
-                data = json.loads(response.read().decode('utf-8'))
-                return {
-                    'statusCode': 200,
-                    'headers': {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*'
-                    },
-                    'body': json.dumps({
-                        'artist': data.get('song', {}).get('artist', 'Неизвестно'),
-                        'title': data.get('song', {}).get('title', '')
-                    })
-                }
-        
-        elif endpoint == 'history':
-            req = urllib.request.Request('https://functions.poehali.dev/df037205-f54b-48b7-8a61-648b24abdfd5')
-            with urllib.request.urlopen(req, timeout=5) as response:
-                data = json.loads(response.read().decode('utf-8'))
-                return {
-                    'statusCode': 200,
-                    'headers': {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*'
-                    },
-                    'body': json.dumps(data)
-                }
-        
-        else:
-            return {
-                'statusCode': 400,
-                'headers': {'Access-Control-Allow-Origin': '*'},
-                'body': json.dumps({'error': 'Invalid endpoint'})
-            }
-    
-    except Exception as e:
+    dsn = os.environ.get('DATABASE_URL')
+    if not dsn:
         return {
             'statusCode': 500,
-            'headers': {'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'error': str(e)})
+            'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+            'isBase64Encoded': False,
+            'body': json.dumps({'error': 'Database not configured'})
         }
+    
+    conn = psycopg2.connect(dsn)
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT artist, title FROM track_history ORDER BY id DESC LIMIT 10")
+    rows = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    
+    tracks = [{'artist': row[0], 'title': row[1]} for row in rows]
+    
+    result = {
+        'current': tracks[0] if tracks else {'artist': 'Радио не вещает', 'title': ''},
+        'history': tracks[1:] if len(tracks) > 1 else []
+    }
+    
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        'isBase64Encoded': False,
+        'body': json.dumps(result, ensure_ascii=False)
+    }

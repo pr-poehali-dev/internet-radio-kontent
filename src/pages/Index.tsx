@@ -19,7 +19,7 @@ const Index = () => {
   useEffect(() => {
     const updateData = async () => {
       try {
-        const response = await fetch('https://functions.poehali.dev/a938e42e-a2e7-4012-90df-34904647f611', {
+        const response = await fetch('https://functions.poehali.dev/323afa8d-a690-4a13-b20a-72518acf4b05', {
           method: 'GET',
           mode: 'cors',
           cache: 'no-cache'
