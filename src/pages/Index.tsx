@@ -19,34 +19,33 @@ const Index = () => {
   useEffect(() => {
     const updateData = async () => {
       try {
-        console.log('Fetching radio data...');
-        const response = await fetch('https://functions.poehali.dev/323afa8d-a690-4a13-b20a-72518acf4b05', {
+        const response = await fetch('https://myradio24.org/status.xsl', {
           method: 'GET',
-          mode: 'cors',
           cache: 'no-cache'
         });
         
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
-        
         if (response.ok) {
-          const data = await response.json();
-          console.log('Radio data received:', data);
+          const text = await response.text();
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(text, 'text/xml');
           
-          if (data && data.current) {
-            console.log('Setting current track:', data.current);
-            setCurrentTrack({ 
-              artist: data.current.artist || 'Неизвестно', 
-              title: data.current.title || '' 
+          const artistNode = xml.querySelector('artist');
+          const titleNode = xml.querySelector('title');
+          
+          if (artistNode && titleNode) {
+            const artist = artistNode.textContent || 'Неизвестно';
+            const title = titleNode.textContent || '';
+            
+            setCurrentTrack({ artist, title });
+            
+            setTrackHistory(prev => {
+              const newTrack = { artist, title };
+              if (prev.length === 0 || prev[0].artist !== artist || prev[0].title !== title) {
+                return [newTrack, ...prev].slice(0, 10);
+              }
+              return prev;
             });
           }
-          
-          if (data && data.history && Array.isArray(data.history)) {
-            console.log('Setting history, count:', data.history.length);
-            setTrackHistory(data.history);
-          }
-        } else {
-          console.error('Response not OK:', response.status, response.statusText);
         }
       } catch (error) {
         console.error('Error fetching radio data:', error);
@@ -54,7 +53,7 @@ const Index = () => {
     };
 
     updateData();
-    const interval = setInterval(updateData, 15000);
+    const interval = setInterval(updateData, 10000);
     
     return () => clearInterval(interval);
   }, []);
