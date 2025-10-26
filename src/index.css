@@ -104,23 +104,40 @@ button[class*="search"],
 button[aria-label*="search"],
 button[aria-label*="Search"],
 button[aria-label*="поиск"],
+button[title*="search"],
+button[title*="Search"],
+button[title*="поиск"],
 [data-search-trigger],
-.search-trigger {
-  transform: scale(0.5) !important;
+[data-search],
+.search-trigger,
+#search-trigger,
+kbd:has(+ span),
+button:has(kbd),
+div[class*="fixed"]:has(button:has(kbd)) {
+  transform: scale(0.4) !important;
   transform-origin: bottom left !important;
-  bottom: 75px !important;
-  left: 5px !important;
-  opacity: 0.5 !important;
-  transition: opacity 0.3s !important;
+  bottom: 80px !important;
+  left: 10px !important;
+  opacity: 0.4 !important;
+  transition: all 0.3s !important;
   position: fixed !important;
   z-index: 40 !important;
+  width: auto !important;
+  height: auto !important;
 }
 
 button[class*="search"]:hover,
 button[aria-label*="search"]:hover,
 button[aria-label*="Search"]:hover,
 button[aria-label*="поиск"]:hover,
+button[title*="search"]:hover,
+button[title*="Search"]:hover,
+button[title*="поиск"]:hover,
 [data-search-trigger]:hover,
-.search-trigger:hover {
-  opacity: 0.9 !important;
+[data-search]:hover,
+.search-trigger:hover,
+#search-trigger:hover,
+button:has(kbd):hover,
+div[class*="fixed"]:has(button:has(kbd)):hover {
+  opacity: 0.8 !important;
 }
