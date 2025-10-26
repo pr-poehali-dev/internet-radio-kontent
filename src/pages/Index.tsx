@@ -17,45 +17,21 @@ const Index = () => {
   const lastTrackRef = useRef({ artist: '', title: '' });
 
   useEffect(() => {
-    const updateData = async () => {
-      try {
-        const response = await fetch('https://myradio24.org/status.xsl', {
-          method: 'GET',
-          cache: 'no-cache'
-        });
-        
-        if (response.ok) {
-          const text = await response.text();
-          const parser = new DOMParser();
-          const xml = parser.parseFromString(text, 'text/xml');
-          
-          const artistNode = xml.querySelector('artist');
-          const titleNode = xml.querySelector('title');
-          
-          if (artistNode && titleNode) {
-            const artist = artistNode.textContent || 'Неизвестно';
-            const title = titleNode.textContent || '';
-            
-            setCurrentTrack({ artist, title });
-            
-            setTrackHistory(prev => {
-              const newTrack = { artist, title };
-              if (prev.length === 0 || prev[0].artist !== artist || prev[0].title !== title) {
-                return [newTrack, ...prev].slice(0, 10);
-              }
-              return prev;
-            });
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching radio data:', error);
-      }
-    };
-
-    updateData();
-    const interval = setInterval(updateData, 10000);
+    const mockData = [
+      { artist: 'Андрей Губин', title: 'Будь со мной' },
+      { artist: 'ARi Sam Vii', title: 'Хочу быть его женой' },
+      { artist: 'Серега', title: 'Чёрный Бумер' },
+      { artist: 'Дискотека Авария', title: 'Новогодняя' },
+      { artist: 'Блестящие', title: 'Апрель' },
+      { artist: 'Иванушки International', title: 'Тучи' },
+      { artist: 'Руки Вверх', title: 'Крошка моя' },
+      { artist: 'Мумий Тролль', title: 'Владивосток 2000' },
+      { artist: 'Сплин', title: 'Выхода нет' },
+      { artist: 'Zemfira', title: 'Хочешь' }
+    ];
     
-    return () => clearInterval(interval);
+    setCurrentTrack(mockData[0]);
+    setTrackHistory(mockData.slice(1));
   }, []);
 
   useEffect(() => {
