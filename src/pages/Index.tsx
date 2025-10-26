@@ -10,6 +10,7 @@ const Index = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState({ artist: 'Загрузка...', title: '' });
   const [listeners, setListeners] = useState(778);
+  const [displayedListeners, setDisplayedListeners] = useState(778);
   const [trackHistory, setTrackHistory] = useState<Array<{artist: string, title: string}>>([]);
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -99,6 +100,30 @@ const Index = () => {
       clearTimeout(timeoutId);
     };
   }, []);
+
+  useEffect(() => {
+    const duration = 1500;
+    const startValue = displayedListeners;
+    const endValue = listeners;
+    const startTime = Date.now();
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const easeOutQuad = (t: number) => t * (2 - t);
+      const easedProgress = easeOutQuad(progress);
+      
+      const currentValue = Math.round(startValue + (endValue - startValue) * easedProgress);
+      setDisplayedListeners(currentValue);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    
+    animate();
+  }, [listeners]);
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -282,7 +307,7 @@ const Index = () => {
                       <div className="flex items-center justify-center gap-2 bg-green-600/20 border border-green-600/30 rounded-lg py-2 px-4">
                         <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-green-500 animate-pulse"></div>
                         <span className="text-green-400 text-sm md:text-base font-semibold">
-                          Сейчас слушают: <span className="text-white">{listeners}</span>
+                          Сейчас слушают: <span className="text-white">{displayedListeners}</span>
                         </span>
                       </div>
                       
