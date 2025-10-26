@@ -5,7 +5,7 @@ import struct
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
-    Business: Get current track from Icecast stream metadata
+    Business: Get current track info from Icecast stream metadata
     Args: event - HTTP event, context - execution context
     Returns: Current track artist and title from stream
     '''
