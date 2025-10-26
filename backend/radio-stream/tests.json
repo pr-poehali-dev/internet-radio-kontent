@@ -1,0 +1,15 @@
+{
+  "tests": [
+    {
+      "name": "Get current track",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "artist": "string",
+        "title": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

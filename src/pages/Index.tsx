@@ -17,21 +17,33 @@ const Index = () => {
   const lastTrackRef = useRef({ artist: '', title: '' });
 
   useEffect(() => {
-    const mockData = [
-      { artist: 'Андрей Губин', title: 'Будь со мной' },
-      { artist: 'ARi Sam Vii', title: 'Хочу быть его женой' },
-      { artist: 'Серега', title: 'Чёрный Бумер' },
-      { artist: 'Дискотека Авария', title: 'Новогодняя' },
-      { artist: 'Блестящие', title: 'Апрель' },
-      { artist: 'Иванушки International', title: 'Тучи' },
-      { artist: 'Руки Вверх', title: 'Крошка моя' },
-      { artist: 'Мумий Тролль', title: 'Владивосток 2000' },
-      { artist: 'Сплин', title: 'Выхода нет' },
-      { artist: 'Zemfira', title: 'Хочешь' }
-    ];
+    const updateTrack = async () => {
+      try {
+        const response = await fetch('https://functions.poehali.dev/a14b9d39-d9b7-4c20-8ba3-a0ca8d113122');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.artist && data.title) {
+            const newTrack = { artist: data.artist, title: data.title };
+            
+            setCurrentTrack(newTrack);
+            
+            setTrackHistory(prev => {
+              if (prev.length === 0 || prev[0].artist !== data.artist || prev[0].title !== data.title) {
+                return [newTrack, ...prev].slice(0, 9);
+              }
+              return prev;
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching track:', error);
+      }
+    };
+
+    updateTrack();
+    const interval = setInterval(updateTrack, 15000);
     
-    setCurrentTrack(mockData[0]);
-    setTrackHistory(mockData.slice(1));
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
