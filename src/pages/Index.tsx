@@ -287,52 +287,50 @@ const Index = () => {
                 ))}
               </div>
             </div>
+          </div>
+        </section>
 
-            <div className="mb-6">
-              <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                <Icon name="Newspaper" size={18} className="text-red-500" />
-                Новости
-              </h2>
-              <div className="space-y-2">
-                {news.map((item, index) => (
-                  <Card key={index} className="bg-gray-800/70 backdrop-blur border-gray-700 rounded-xl overflow-hidden hover:bg-gray-800/90 transition-colors">
-                    <CardContent className="p-4">
-                      <div className="text-xs text-gray-500 mb-1">{item.date}</div>
-                      <div className="font-semibold text-white text-sm mb-1">{item.title}</div>
-                      <div className="text-xs text-gray-400">{item.text}</div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            <div id="contacts" className="mb-6">
-              <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                <Icon name="Phone" size={18} className="text-red-500" />
-                Контакты
-              </h2>
-              <Card className="bg-gray-800/70 backdrop-blur border-gray-700 rounded-xl overflow-hidden">
-                <CardContent className="p-4 space-y-3">
-                  <div className="flex items-center gap-3">
-                    <Icon name="Mail" size={16} className="text-red-500" />
-                    <a href="mailto:info@kontentmediapro.ru" className="text-sm text-gray-300 hover:text-red-500 transition-colors">
-                      info@kontentmediapro.ru
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Icon name="Phone" size={16} className="text-red-500" />
-                    <a href="tel:+79999999999" className="text-sm text-gray-300 hover:text-red-500 transition-colors">
-                      +7 (999) 999-99-99
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Icon name="MapPin" size={16} className="text-red-500" />
-                    <span className="text-sm text-gray-300">Москва, Россия</span>
-                  </div>
+        <section id="news" className="container mx-auto max-w-2xl mb-6">
+          <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+            <Icon name="Newspaper" size={18} className="text-red-500" />
+            Новости
+          </h2>
+          <div className="space-y-2">
+            {news.map((item, index) => (
+              <Card key={index} className="bg-gray-800/70 backdrop-blur border-gray-700 rounded-xl overflow-hidden hover:bg-gray-800/90 transition-colors">
+                <CardContent className="p-4">
+                  <div className="text-xs text-gray-500 mb-1">{item.date}</div>
+                  <div className="font-semibold text-white text-sm mb-1">{item.title}</div>
+                  <div className="text-xs text-gray-400">{item.text}</div>
                 </CardContent>
               </Card>
-            </div>
+            ))}
           </div>
+        </section>
+
+        <section id="contacts" className="container mx-auto max-w-2xl mb-6">
+          <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+            <Icon name="MessageCircle" size={18} className="text-red-500" />
+            Контакты
+          </h2>
+          <Card className="bg-gray-800/70 backdrop-blur border-gray-700 rounded-xl overflow-hidden">
+            <CardContent className="p-6 text-center">
+              <p className="text-sm text-gray-300 mb-4">
+                По всем вопросам и предложениям пишите нам в лс сообщества
+              </p>
+              <a
+                href="https://vk.com/kontentmediapro"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.39 14.74c-.29.37-.85.64-1.38.64-.03 0-.05 0-.08-.01-.7-.07-1.35-.53-2.17-1.13-.69-.51-1.47-1.08-2.37-1.08-.03 0-.06 0-.09.01-.95.07-1.65.7-2.31 1.29-.47.43-.95.86-1.51 1.09-.21.09-.43.13-.65.13-.49 0-.96-.19-1.31-.54-.69-.69-.88-1.82-.5-2.88.36-1 1.22-1.94 2.36-2.58.88-.49 1.88-.74 2.89-.74.39 0 .78.04 1.16.11 1.5.28 2.7 1.2 3.32 2.54.55 1.19.59 2.57.09 3.79-.11.27-.27.4-.45.4z"/>
+                </svg>
+                Написать ВКонтакте
+              </a>
+            </CardContent>
+          </Card>
         </section>
       </main>
 
@@ -378,8 +376,10 @@ const Index = () => {
               <span className="text-xs font-medium">Треки</span>
             </button>
             <button
-              onClick={() => scrollToSection('home')}
-              className="flex flex-col items-center gap-1 py-3 px-4 text-gray-400 hover:text-white transition-colors"
+              onClick={() => scrollToSection('news')}
+              className={`flex flex-col items-center gap-1 py-3 px-4 transition-colors ${
+                currentSection === 'news' ? 'text-red-500' : 'text-gray-400 hover:text-white'
+              }`}
             >
               <Icon name="Newspaper" size={20} />
               <span className="text-xs font-medium">Новости</span>
@@ -390,7 +390,7 @@ const Index = () => {
                 currentSection === 'contacts' ? 'text-red-500' : 'text-gray-400 hover:text-white'
               }`}
             >
-              <Icon name="Phone" size={20} />
+              <Icon name="MessageCircle" size={20} />
               <span className="text-xs font-medium">Контакты</span>
             </button>
           </div>
@@ -399,8 +399,9 @@ const Index = () => {
 
       <audio
         ref={audioRef}
-        src="https://myradio24.org/kontentmediapro"
+        src="https://myradio24.org/54137.m3u"
         preload="none"
+        className="hidden"
       />
     </div>
   );
