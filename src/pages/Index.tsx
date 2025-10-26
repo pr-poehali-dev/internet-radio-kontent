@@ -75,15 +75,28 @@ const Index = () => {
 
   useEffect(() => {
     const updateListeners = () => {
-      const baseCount = 778;
-      const variation = Math.floor(Math.random() * 21) - 10;
-      setListeners(baseCount + variation);
+      const min = 778;
+      const max = 2000;
+      const randomCount = Math.floor(Math.random() * (max - min + 1)) + min;
+      setListeners(randomCount);
     };
 
-    const listenersInterval = setInterval(updateListeners, 15000);
+    updateListeners();
+    
+    const getRandomInterval = () => Math.floor(Math.random() * 10000) + 10000;
+    
+    const scheduleNext = () => {
+      const delay = getRandomInterval();
+      return setTimeout(() => {
+        updateListeners();
+        scheduleNext();
+      }, delay);
+    };
+    
+    const timeoutId = scheduleNext();
     
     return () => {
-      clearInterval(listenersInterval);
+      clearTimeout(timeoutId);
     };
   }, []);
 
