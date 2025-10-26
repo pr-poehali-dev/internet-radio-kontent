@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [currentSection, setCurrentSection] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState({ artist: 'Загрузка...', title: '' });
   const [listeners, setListeners] = useState(778);
   const [displayedListeners, setDisplayedListeners] = useState(778);
   const [trackHistory, setTrackHistory] = useState<Array<{artist: string, title: string}>>([]);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [showInstallBanner, setShowInstallBanner] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -94,31 +95,6 @@ const Index = () => {
     animate();
   }, [listeners]);
 
-  useEffect(() => {
-    const handler = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowInstallBanner(true);
-    };
-
-    window.addEventListener('beforeinstallprompt', handler);
-
-    return () => window.removeEventListener('beforeinstallprompt', handler);
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
-
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-      setShowInstallBanner(false);
-    }
-    
-    setDeferredPrompt(null);
-  };
-
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -170,6 +146,7 @@ const Index = () => {
 
   const scrollToSection = (section: string) => {
     setCurrentSection(section);
+    setIsMobileMenuOpen(false);
     const element = document.getElementById(section);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -177,111 +154,184 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 pb-32">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-700/50 shadow-lg">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-center">
+    <div className="min-h-screen bg-background">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
             <button
               onClick={() => scrollToSection('home')}
-              className="flex items-center gap-2 text-lg font-bold text-white hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 text-base md:text-2xl font-bold font-heading text-white hover:opacity-80 transition-opacity"
             >
-              <Icon name="Radio" size={20} className="text-red-500" />
-              <span>КонтентМедиа<span className="text-red-500">PRO</span></span>
+              <Icon name="Radio" size={24} className="text-red-600" />
+              <span>КонтентМедиа<span className="text-red-600">PRO</span></span>
             </button>
+            
+            <button
+              className="md:hidden text-foreground"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              <Icon name={isMobileMenuOpen ? 'X' : 'Menu'} size={24} />
+            </button>
+
+            <div className="hidden md:flex gap-6">
+              {[
+                { id: 'home', label: 'Главная' },
+                { id: 'contacts', label: 'Контакты' },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`font-medium transition-colors ${
+                    currentSection === item.id
+                      ? 'text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {isMobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 flex flex-col gap-4 animate-fade-in">
+              {[
+                { id: 'home', label: 'Главная' },
+                { id: 'contacts', label: 'Контакты' },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`font-medium transition-colors text-left ${
+                    currentSection === item.id
+                      ? 'text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </nav>
 
-      <main className="pt-16 px-4">
-        <section id="home" className="container mx-auto max-w-2xl">
-          <div className="mb-6 pt-6">
-            <div className="text-center mb-6">
-              <img 
-                src="https://cdn.poehali.dev/files/0b6cba82-83b0-43c5-8a66-cd437a298dc4.jpg" 
-                alt="КонтентМедиа PRO" 
-                className="w-32 h-auto mx-auto mix-blend-screen mb-4"
-              />
-              <h1 className="text-2xl font-bold mb-2">
-                <span className="text-white">КонтентМедиа</span><span className="text-red-500">PRO</span>
+      <main className="pt-20">
+        <section id="home" className="min-h-screen flex items-center justify-center px-4">
+          <div className="container mx-auto max-w-4xl animate-fade-in">
+            <div className="text-center mb-12 md:mb-16">
+              <div className="mb-8 md:mb-12 flex justify-center">
+                <img 
+                  src="https://cdn.poehali.dev/files/0b6cba82-83b0-43c5-8a66-cd437a298dc4.jpg" 
+                  alt="КонтентМедиа PRO" 
+                  className="w-64 md:w-96 h-auto mix-blend-screen"
+                />
+              </div>
+              <h1 className="text-3xl md:text-7xl font-bold font-heading mb-6 md:mb-8">
+                <span className="text-white">КонтентМедиа</span><span className="text-red-600">PRO</span>
               </h1>
-              <p className="text-sm text-gray-400">
-                Твоя музыка. Твой ритм. Твоя радиостанция.
+              <p className="text-base md:text-2xl text-gray-400">
+                Твоя музыка. Твой ритм.<br className="md:hidden" /> Твоя радиостанция.
               </p>
             </div>
 
-            <Card className="bg-gray-800/90 backdrop-blur border-gray-700 shadow-xl mb-4 rounded-2xl overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
-                      <Icon name="Music" size={24} className="text-white" />
+            <Card className="bg-black/80 backdrop-blur-sm border-2 border-white/10 shadow-2xl animate-scale-in">
+              <CardContent className="p-8 md:p-12">
+                <div className="flex flex-col items-center gap-6 md:gap-8 mb-8 md:mb-12">
+                  <div className="relative">
+                    <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center shadow-2xl animate-pulse-slow">
+                      <Icon name="Radio" size={48} className="text-white md:w-16 md:h-16" />
                     </div>
+                    <div className="absolute -bottom-2 -right-2 bg-green-500 w-6 h-6 md:w-8 md:h-8 rounded-full border-4 border-black animate-pulse"></div>
+                  </div>
+
+                  <div className="text-center w-full">
+                    <div className="text-xs md:text-sm text-gray-500 mb-2 md:mb-3">Сейчас в эфире</div>
+                    <div className="text-xl md:text-3xl font-bold text-white mb-1 md:mb-2 truncate px-4">
+                      {currentTrack.artist}
+                    </div>
+                    <div className="text-base md:text-xl text-gray-400 truncate px-4">
+                      {currentTrack.title}
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={togglePlay}
+                    size="lg"
+                    className="w-full md:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 md:py-6 px-8 md:px-12 text-base md:text-lg rounded-full shadow-lg hover:shadow-red-600/50 transition-all duration-300 hover:scale-105"
+                  >
+                    <Icon name={isPlaying ? 'Pause' : 'Play'} size={24} className="mr-2 md:mr-3" />
+                    {isPlaying ? 'Пауза' : 'Слушать'}
+                  </Button>
+                </div>
+
+                <Separator className="my-6 md:my-8 bg-white/10" />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+                  <div className="flex items-center gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg">
+                    <Icon name="Users" size={24} className="text-red-600 flex-shrink-0" />
                     <div>
-                      <div className="text-xs text-gray-400 mb-1">Сейчас играет</div>
-                      <div className="font-semibold text-white text-sm">{currentTrack.artist}</div>
-                      <div className="text-xs text-gray-400">{currentTrack.title}</div>
+                      <div className="text-xs md:text-sm text-gray-500">Слушателей онлайн</div>
+                      <div className="text-lg md:text-2xl font-bold text-white">{displayedListeners}</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg">
+                    <Icon name="Clock" size={24} className="text-red-600 flex-shrink-0" />
+                    <div>
+                      <div className="text-xs md:text-sm text-gray-500">В эфире</div>
+                      <div className="text-lg md:text-2xl font-bold text-white">24/7</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <Icon name="Users" size={14} />
-                    <span>{displayedListeners} слушателей</span>
-                  </div>
-                  <button 
-                    onClick={handleShare}
-                    className="flex items-center gap-1 hover:text-red-500 transition-colors"
-                  >
-                    <Icon name="Share2" size={14} />
-                    <span>Поделиться</span>
-                  </button>
-                </div>
+                <Button
+                  onClick={handleShare}
+                  variant="outline"
+                  className="w-full border-white/20 text-white hover:bg-white/10 text-sm md:text-base py-3 md:py-4"
+                >
+                  <Icon name="Share2" size={18} className="mr-2" />
+                  Поделиться с друзьями
+                </Button>
               </CardContent>
             </Card>
 
-            {showInstallBanner && (
-              <Card className="bg-gradient-to-r from-red-500 to-red-600 border-0 shadow-xl mb-4 rounded-2xl overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                        <Icon name="Download" size={20} className="text-white" />
-                      </div>
-                      <div>
-                        <div className="font-semibold text-white text-sm">Установить приложение</div>
-                        <div className="text-xs text-white/80">Слушай радио в любое время</div>
-                      </div>
-                    </div>
-                    <button
-                      onClick={handleInstallClick}
-                      className="bg-white text-red-600 px-4 py-2 rounded-lg text-xs font-semibold hover:bg-gray-100 transition-colors"
-                    >
-                      Установить
-                    </button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            <div className="mb-6">
-              <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                <Icon name="Clock" size={18} className="text-red-500" />
+            <div className="mt-8 md:mt-12 animate-fade-in">
+              <h2 className="text-xl md:text-3xl font-bold font-heading text-white mb-4 md:mb-6 flex items-center gap-2 md:gap-3">
+                <Icon name="Clock" size={24} className="text-red-600" />
                 История треков
               </h2>
-              <div className="space-y-2">
+              <div className="space-y-2 md:space-y-3">
                 {trackHistory.map((track, index) => (
-                  <Card key={index} className="bg-gray-800/70 backdrop-blur border-gray-700 rounded-xl overflow-hidden hover:bg-gray-800/90 transition-colors">
-                    <CardContent className="p-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center text-xs text-gray-400">
+                  <Card key={index} className="bg-black/60 backdrop-blur-sm border border-white/10 hover:border-red-600/50 transition-all duration-300">
+                    <CardContent className="p-3 md:p-4">
+                      <div className="flex items-center gap-3 md:gap-4">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-red-600/20 rounded-full flex items-center justify-center text-red-600 font-bold text-sm md:text-base flex-shrink-0">
                           {index + 1}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="font-medium text-white text-sm truncate">{track.artist}</div>
-                          <div className="text-xs text-gray-400 truncate">{track.title}</div>
+                          <div className="font-semibold text-white text-sm md:text-base truncate">{track.artist}</div>
+                          <div className="text-xs md:text-sm text-gray-400 truncate">{track.title}</div>
                         </div>
                       </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-8 md:mt-12 animate-fade-in">
+              <h2 className="text-xl md:text-3xl font-bold font-heading text-white mb-4 md:mb-6 flex items-center gap-2 md:gap-3">
+                <Icon name="Newspaper" size={24} className="text-red-600" />
+                Новости
+              </h2>
+              <div className="space-y-3 md:space-y-4">
+                {news.map((item, index) => (
+                  <Card key={index} className="bg-black/60 backdrop-blur-sm border border-white/10 hover:border-red-600/50 transition-all duration-300">
+                    <CardContent className="p-4 md:p-6">
+                      <div className="text-xs md:text-sm text-gray-500 mb-2">{item.date}</div>
+                      <h3 className="text-base md:text-xl font-bold text-white mb-2">{item.title}</h3>
+                      <p className="text-sm md:text-base text-gray-400">{item.text}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -290,118 +340,53 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="news" className="container mx-auto max-w-2xl mb-6">
-          <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-            <Icon name="Newspaper" size={18} className="text-red-500" />
-            Новости
-          </h2>
-          <div className="space-y-2">
-            {news.map((item, index) => (
-              <Card key={index} className="bg-gray-800/70 backdrop-blur border-gray-700 rounded-xl overflow-hidden hover:bg-gray-800/90 transition-colors">
-                <CardContent className="p-4">
-                  <div className="text-xs text-gray-500 mb-1">{item.date}</div>
-                  <div className="font-semibold text-white text-sm mb-1">{item.title}</div>
-                  <div className="text-xs text-gray-400">{item.text}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
+        <section id="contacts" className="min-h-screen flex items-center justify-center px-4 py-12 md:py-20">
+          <div className="container mx-auto max-w-4xl animate-fade-in">
+            <h2 className="text-2xl md:text-5xl font-bold font-heading text-white mb-6 md:mb-12 text-center">
+              Свяжитесь с нами
+            </h2>
+            
+            <Card className="bg-black/80 backdrop-blur-sm border-2 border-white/10 shadow-2xl">
+              <CardContent className="p-6 md:p-12">
+                <div className="space-y-4 md:space-y-6">
+                  <div className="flex items-start gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+                    <Icon name="Mail" size={24} className="text-red-600 mt-1 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs md:text-sm text-gray-500 mb-1">Email</div>
+                      <a href="mailto:info@kontentmediapro.ru" className="text-base md:text-xl text-white hover:text-red-600 transition-colors break-all">
+                        info@kontentmediapro.ru
+                      </a>
+                    </div>
+                  </div>
 
-        <section id="contacts" className="container mx-auto max-w-2xl mb-6">
-          <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-            <Icon name="MessageCircle" size={18} className="text-red-500" />
-            Контакты
-          </h2>
-          <Card className="bg-gray-800/70 backdrop-blur border-gray-700 rounded-xl overflow-hidden">
-            <CardContent className="p-6 text-center">
-              <p className="text-sm text-gray-300 mb-4">
-                По всем вопросам и предложениям пишите нам в лс сообщества
-              </p>
-              <a
-                href="https://vk.com/kontentmediapro"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.39 14.74c-.29.37-.85.64-1.38.64-.03 0-.05 0-.08-.01-.7-.07-1.35-.53-2.17-1.13-.69-.51-1.47-1.08-2.37-1.08-.03 0-.06 0-.09.01-.95.07-1.65.7-2.31 1.29-.47.43-.95.86-1.51 1.09-.21.09-.43.13-.65.13-.49 0-.96-.19-1.31-.54-.69-.69-.88-1.82-.5-2.88.36-1 1.22-1.94 2.36-2.58.88-.49 1.88-.74 2.89-.74.39 0 .78.04 1.16.11 1.5.28 2.7 1.2 3.32 2.54.55 1.19.59 2.57.09 3.79-.11.27-.27.4-.45.4z"/>
-                </svg>
-                Написать ВКонтакте
-              </a>
-            </CardContent>
-          </Card>
+                  <div className="flex items-start gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+                    <Icon name="Phone" size={24} className="text-red-600 mt-1 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs md:text-sm text-gray-500 mb-1">Телефон</div>
+                      <a href="tel:+79999999999" className="text-base md:text-xl text-white hover:text-red-600 transition-colors">
+                        +7 (999) 999-99-99
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 md:gap-4 p-4 md:p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+                    <Icon name="MapPin" size={24} className="text-red-600 mt-1 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs md:text-sm text-gray-500 mb-1">Адрес</div>
+                      <p className="text-base md:text-xl text-white">Москва, Россия</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </section>
       </main>
 
-      <div className="fixed bottom-16 left-0 right-0 z-40 bg-gray-900/95 backdrop-blur-md border-t border-gray-700/50 shadow-2xl">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between max-w-2xl mx-auto">
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center shadow-lg flex-shrink-0">
-                <Icon name="Radio" size={20} className="text-white" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="font-semibold text-white text-sm truncate">{currentTrack.artist}</div>
-                <div className="text-xs text-gray-400 truncate">{currentTrack.title}</div>
-              </div>
-            </div>
-            <button
-              onClick={togglePlay}
-              className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all hover:scale-105 flex-shrink-0 ml-3"
-            >
-              <Icon name={isPlaying ? 'Pause' : 'Play'} size={24} className="text-white" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 border-t border-gray-700/50 shadow-2xl">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-around max-w-2xl mx-auto">
-            <button
-              onClick={() => scrollToSection('home')}
-              className={`flex flex-col items-center gap-1 py-3 px-4 transition-colors ${
-                currentSection === 'home' ? 'text-red-500' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              <Icon name="Home" size={20} />
-              <span className="text-xs font-medium">Главная</span>
-            </button>
-            <button
-              onClick={() => scrollToSection('home')}
-              className="flex flex-col items-center gap-1 py-3 px-4 text-gray-400 hover:text-white transition-colors"
-            >
-              <Icon name="ListMusic" size={20} />
-              <span className="text-xs font-medium">Треки</span>
-            </button>
-            <button
-              onClick={() => scrollToSection('news')}
-              className={`flex flex-col items-center gap-1 py-3 px-4 transition-colors ${
-                currentSection === 'news' ? 'text-red-500' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              <Icon name="Newspaper" size={20} />
-              <span className="text-xs font-medium">Новости</span>
-            </button>
-            <button
-              onClick={() => scrollToSection('contacts')}
-              className={`flex flex-col items-center gap-1 py-3 px-4 transition-colors ${
-                currentSection === 'contacts' ? 'text-red-500' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              <Icon name="MessageCircle" size={20} />
-              <span className="text-xs font-medium">Контакты</span>
-            </button>
-          </div>
-        </div>
-      </nav>
-
       <audio
         ref={audioRef}
-        src="https://myradio24.org/kontentmediapro"
+        src="http://myradio24.org/54137"
         preload="none"
-        className="hidden"
       />
     </div>
   );
