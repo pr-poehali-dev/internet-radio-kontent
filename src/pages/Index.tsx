@@ -8,10 +8,16 @@ const Index = () => {
   const [currentSection, setCurrentSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState({ artist: 'Загрузка...', title: '' });
+  const [currentTrack, setCurrentTrack] = useState({ artist: 'TIMOFEEW', title: 'Тополя' });
   const [listeners, setListeners] = useState(778);
   const [displayedListeners, setDisplayedListeners] = useState(778);
-  const [trackHistory, setTrackHistory] = useState<Array<{artist: string, title: string}>>([]);
+  const [trackHistory, setTrackHistory] = useState<Array<{artist: string, title: string}>>([
+    { artist: 'Настасья Самбурская, VESNA305', title: 'Глупые люди' },
+    { artist: 'Катя Денисова', title: 'Твоя девочка скучает' },
+    { artist: 'Многоточие', title: 'В жизни так бывает' },
+    { artist: 'FISHER, Aatig', title: 'Take It Off' },
+    { artist: 'Мари Краймбрери', title: 'Случилась осень' }
+  ]);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const lastTrackRef = useRef({ artist: '', title: '' });
