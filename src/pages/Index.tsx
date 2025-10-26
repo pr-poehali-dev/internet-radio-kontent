@@ -19,17 +19,22 @@ const Index = () => {
   useEffect(() => {
     const updateData = async () => {
       try {
+        console.log('Fetching radio data...');
         const response = await fetch('https://functions.poehali.dev/323afa8d-a690-4a13-b20a-72518acf4b05', {
           method: 'GET',
           mode: 'cors',
           cache: 'no-cache'
         });
         
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
         if (response.ok) {
           const data = await response.json();
           console.log('Radio data received:', data);
           
           if (data && data.current) {
+            console.log('Setting current track:', data.current);
             setCurrentTrack({ 
               artist: data.current.artist || 'Неизвестно', 
               title: data.current.title || '' 
@@ -37,8 +42,11 @@ const Index = () => {
           }
           
           if (data && data.history && Array.isArray(data.history)) {
+            console.log('Setting history, count:', data.history.length);
             setTrackHistory(data.history);
           }
+        } else {
+          console.error('Response not OK:', response.status, response.statusText);
         }
       } catch (error) {
         console.error('Error fetching radio data:', error);
