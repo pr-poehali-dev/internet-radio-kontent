@@ -47,7 +47,7 @@ const Index = () => {
     };
 
     updateTrack();
-    const interval = setInterval(updateTrack, 15000);
+    const interval = setInterval(updateTrack, 900000);
     
     return () => clearInterval(interval);
   }, []);
